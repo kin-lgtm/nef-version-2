@@ -1,23 +1,12 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { 
   Users, 
-  Target, 
-  Award, 
+
   Calendar, 
   MapPin, 
-  Leaf, 
-  BookOpen, 
   Globe, 
   Heart,
-  TreePine,
-  Droplets,
-  Mountain,
-  Facebook, 
-  Twitter, 
-  Instagram,
-  Lightbulb,
-  Shield,
-  TrendingUp,
+
 } from 'lucide-react';
 
 
@@ -37,12 +26,7 @@ interface JourneyMilestone {
   icon: React.ComponentType<{ className?: string }>;
 }
 
-interface Achievement {
-  label: string;
-  value: string;
-  icon: React.ComponentType<{ className?: string }>;
-  color: string;
-}
+
 
 const StoryPage: React.FC = () => {
   // Simplify to a constant if no state updates are intended
@@ -77,14 +61,7 @@ const StoryPage: React.FC = () => {
     { year: 2024, title: "National Impact", description: "1000+ active members driving change with 50+ projects completed nationwide", icon: Globe }
   ];
 
-  const achievements: Achievement[] = [
-    { label: "Years of Service", value: "12+", icon: Calendar, color: "from-green-400 to-emerald-500" },
-    { label: "Provinces Covered", value: "9", icon: MapPin, color: "from-blue-400 to-cyan-500" },
-    { label: "Active Members", value: "1000+", icon: Users, color: "from-purple-400 to-pink-500" },
-    { label: "Projects Completed", value: "50+", icon: Target, color: "from-orange-400 to-red-500" },
-    { label: "District Coordinators", value: "24", icon: Globe, color: "from-teal-400 to-green-500" },
-    { label: "Communities Impacted", value: "100+", icon: Heart, color: "from-rose-400 to-pink-500" }
-  ];
+  
 
   return (
     <div className="min-h-screen bg-gray-50">
@@ -118,8 +95,7 @@ const StoryPage: React.FC = () => {
 
               {/* Milestones */}
               <div className="flex gap-8 pb-8">
-                {journeyMilestones.map((milestone, index) => {
-                  const Icon = milestone.icon;
+                {journeyMilestones.map((milestone) => {
                   return (
                     <div key={milestone.year} className="relative flex-shrink-0 w-70">
                       {/* Center dot */}

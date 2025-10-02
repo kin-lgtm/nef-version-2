@@ -1,8 +1,6 @@
-import React from 'react';
+
 import { Link } from 'react-router-dom';
 import { Calendar, Search, Newspaper, PartyPopper, Megaphone, Award, Users, TreePine } from 'lucide-react';
-import Footer from '../components/footer';
-import Navbar from '../components/navbar';
 import { newsEvents } from '../lib/newsEvents';
 
 const NewsEventsPage = () => {

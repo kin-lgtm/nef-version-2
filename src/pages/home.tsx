@@ -12,9 +12,6 @@ import {
   Bird,
   ArrowRight,
 } from 'lucide-react';
-import Navbar from '../components/navbar'; // Adjust path if using aliases (e.g., '@/components/Navbar')
-import Footer from '../components/footer'; // Adjust path if using aliases (e.g., '@/components/Footer')
-
 // Define interfaces for data structures
 interface HeroSlide {
   title: string;

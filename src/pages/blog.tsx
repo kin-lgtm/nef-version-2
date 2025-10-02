@@ -1,8 +1,6 @@
-import React from 'react';
+
 import { Link } from 'react-router-dom';
 import { Leaf, Calendar, Search, Globe, TreePine, BookOpen, Heart, Users } from 'lucide-react';
-import Footer from '../components/footer';
-import Navbar from '../components/navbar';
 import { blogPosts } from '../lib/blogPosts';
 
 const BlogPage = () => {

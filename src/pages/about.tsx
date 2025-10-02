@@ -1,25 +1,15 @@
 import React from 'react';
 import {
   Users,
-  Target,
-  Award,
-  Calendar,
-  MapPin,
-  Leaf,
+ 
   BookOpen,
   Globe,
-  Heart,
+
   TreePine,
-  Droplets,
-  Mountain,
-  Facebook,
-  Twitter,
-  Instagram,
+ 
   Lightbulb,
   Shield,
 } from 'lucide-react';
-import Footer from '../components/footer'; // Adjust path as needed
-import Navbar from '../components/navbar';
 
 // Define interface for objectives
 interface Objective {
