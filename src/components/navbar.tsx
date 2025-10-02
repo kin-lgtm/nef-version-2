@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { Menu, X } from 'lucide-react';
+import { Link } from 'react-router-dom'; // Import Link
 
 // Define interfaces for navigation items
 interface NavItem {
@@ -57,14 +58,14 @@ const Navbar: React.FC = () => {
             <div className="ml-10 flex items-center space-x-10">
               {navigation.map((item) => (
                 <div key={item.name} className="relative">
-                  <a
-                    href={item.href}
+                  <Link
+                    to={item.href}
                     className="text-white hover:text-green-200 px-4 py-3 rounded-md text-base font-medium transition-all duration-300 flex items-center space-x-1"
                     onMouseEnter={() => item.hasSubmenu && setIsAboutDropdownOpen(true)}
                     onMouseLeave={() => item.hasSubmenu && setIsAboutDropdownOpen(false)}
                   >
                     <span>{item.name}</span>
-                  </a>
+                  </Link>
                   {item.hasSubmenu && isAboutDropdownOpen && (
                     <div
                       className="w-[200px] absolute top-full left-0 bg-white shadow-lg py-2"
@@ -72,13 +73,14 @@ const Navbar: React.FC = () => {
                       onMouseLeave={() => setIsAboutDropdownOpen(false)}
                     >
                       {aboutSubmenu.map((subItem) => (
-                        <a
+                        <Link
                           key={subItem.name}
-                          href={subItem.href}
+                          to={subItem.href}
                           className="block px-4 py-2 text-gray-800 hover:bg-green-100 transition-colors"
+                          onClick={() => setIsAboutDropdownOpen(false)} // Close dropdown on click
                         >
                           {subItem.name}
-                        </a>
+                        </Link>
                       ))}
                     </div>
                   )}
@@ -104,24 +106,24 @@ const Navbar: React.FC = () => {
             <div className="px-4 pt-4 pb-3 space-y-2">
               {navigation.map((item) => (
                 <div key={item.name}>
-                  <a
-                    href={item.href}
+                  <Link
+                    to={item.href}
                     className="text-white hover:text-green-200 block px-4 py-3 rounded-md text-lg font-medium transition-all duration-300 flex items-center space-x-2 hover:bg-green-600/30"
                     onClick={() => (item.hasSubmenu ? null : setIsMenuOpen(false))}
                   >
                     <span>{item.name}</span>
-                  </a>
+                  </Link>
                   {item.hasSubmenu && (
                     <div className="pl-6 space-y-1">
                       {aboutSubmenu.map((subItem) => (
-                        <a
+                        <Link
                           key={subItem.name}
-                          href={subItem.href}
+                          to={subItem.href}
                           className="text-white hover:text-green-200 block px-4 py-2 rounded-md text-base font-medium transition-all duration-300 hover:bg-green-600/30"
                           onClick={() => setIsMenuOpen(false)}
                         >
                           {subItem.name}
-                        </a>
+                        </Link>
                       ))}
                     </div>
                   )}
