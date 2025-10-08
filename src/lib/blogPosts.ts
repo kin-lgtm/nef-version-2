@@ -1,7 +1,7 @@
 export interface BlogPost {
   id: number;
   title: string;
-  description: string;
+  firstDescription: string;
   date: string;
   author: string;
   secondDescription: string;
@@ -16,7 +16,7 @@ export const blogPosts: BlogPost[] = [
   {
     id: 1,
     title: "Preserving Sri Lanka's Ancient Tank Systems: Indigenous Water Management Wisdom",
-    description:
+    firstDescription:
       "Explore how traditional cascade tank systems have sustained Sri Lankan agriculture for over 2,000 years and NEF's efforts to revive this indigenous knowledge in the face of climate change.",
     date: "September 15, 2025",
     author: "Dr. Sumedha Manjula",
@@ -37,7 +37,7 @@ export const blogPosts: BlogPost[] = [
   {
     id: 2,
     title: "The Role of Sacred Groves in Biodiversity Conservation",
-    description:
+    firstDescription:
       "Discover how Sri Lanka's sacred forest groves (Devale) protect endangered species and maintain ecological balance, with insights from NEF's community-based preservation projects.",
     date: "August 28, 2025",
     author: "Amitha Bandara Andagala",
@@ -58,7 +58,7 @@ export const blogPosts: BlogPost[] = [
   {
     id: 3,
     title: "Youth Engagement in Environmental Conservation: NEF's Educational Initiatives",
-    description:
+    firstDescription:
       "Learn about NEF's programs aimed at cultivating environmental awareness among Sri Lanka's youth, including school workshops and field studies on indigenous ecological practices.",
     date: "July 10, 2025",
     author: "Herath Mudiyanselage Punchi Banda Herath",
@@ -79,7 +79,7 @@ export const blogPosts: BlogPost[] = [
   {
     id: 4,
     title: "Alternative Energy Solutions: Promoting Solar and Wind in Rural Sri Lanka",
-    description:
+    firstDescription:
       "NEF's collaborative projects with communities to implement sustainable energy alternatives, reducing reliance on fossil fuels while preserving traditional knowledge.",
     date: "June 5, 2025",
     author: "NEF Research Team",
