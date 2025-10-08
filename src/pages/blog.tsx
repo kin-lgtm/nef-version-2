@@ -82,7 +82,7 @@ const BlogPage = () => {
                       {post.category}
                     </div>
                     <h2 className="text-xl font-bold mb-2 line-clamp-2">{post.title}</h2>
-                    <p className="text-gray-200 text-sm mb-4 line-clamp-2">{post.description}</p>
+                    <p className="text-gray-200 text-sm mb-4 line-clamp-2">{post.firstDescription}</p>
                     <div className="flex items-center justify-between text-xs text-gray-300">
                       <div className="flex items-center space-x-1">
                         <Calendar className="h-3 w-3" />

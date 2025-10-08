@@ -56,7 +56,7 @@ const BlogDetailPage = () => {
               </div>
 
               {/* First Description */}
-              <p className="text-lg text-gray-700 leading-relaxed">{post.description}</p>
+              <p className="text-lg text-gray-700 leading-relaxed">{post.firstDescription}</p>
 
               {/* Additional Images */}
               <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
