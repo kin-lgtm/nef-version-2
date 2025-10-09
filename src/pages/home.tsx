@@ -29,6 +29,7 @@ interface Program {
   title: string;
   description: string;
   participants: string;
+  link: string;
 }
 
 const Homepage: React.FC = () => {
@@ -80,16 +81,19 @@ const Homepage: React.FC = () => {
       title: 'Youth Environmental Education',
       description: 'Engaging younger generations in environmental conservation and indigenous knowledge preservation.',
       participants: '500+ Youth',
+      link: 'https://www.sustainabilitydegrees.com/',
     },
     {
       title: 'Community Cooperatives',
       description: 'Supporting environmental cooperatives across Sri Lanka\'s 9 provinces.',
       participants: '50+ Communities',
+      link: '#',
     },
     {
       title: 'Traditional Knowledge Documentation',
       description: 'Recording and preserving indigenous environmental practices and wisdom.',
       participants: '200+ Elders',
+      link: '#',
     },
   ];
 
@@ -235,7 +239,7 @@ const Homepage: React.FC = () => {
       </div>
 
       {/* Vision Section */}
-      <section className="py-16 bg-gradient-to-br from-green-600/10 to-green-600/10">
+      {/* <section className="py-16 bg-gradient-to-br from-green-600/10 to-green-600/10">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center mb-12">
             <h2 className="text-4xl font-bold text-green-800 mb-4">Our Vision</h2>
@@ -268,7 +272,7 @@ const Homepage: React.FC = () => {
             </div>
           </div>
         </div>
-      </section>
+      </section> */}
 
       {/* Key Objectives */}
       <section className="py-16 bg-white">
@@ -299,7 +303,7 @@ const Homepage: React.FC = () => {
       </section>
 
       {/* Programs Section */}
-      <section className="py-16 bg-[#3c3c3c] text-white">
+      <section className="py-16 text-white bg-gradient-to-br from-blue-500 via-green-900/80 to-green-600">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center mb-12">
             <h2 className="text-4xl font-bold mb-4">Our Programs</h2>
@@ -310,17 +314,22 @@ const Homepage: React.FC = () => {
 
           <div className="grid md:grid-cols-3 gap-8">
             {programs.map((program, index) => (
-              <div key={index} className="bg-white/10 backdrop-blur-sm p-6 rounded-xl border border-white/20">
+              <div key={index} className="bg-white/10 backdrop-blur-lg p-6 rounded-xl border border-white/20">
                 <div className="flex items-center justify-between mb-4">
                   <Award className="h-8 w-8 text-green-300" />
                   <span className="bg-green-600 px-3 py-2 text-sm font-medium">{program.participants}</span>
                 </div>
                 <h3 className="text-xl font-semibold mb-3">{program.title}</h3>
                 <p className="text-green-100 mb-4">{program.description}</p>
-                <button className="text-green-300 hover:text-white font-medium flex items-center space-x-1 transition-colors">
-                  <span>Learn More</span>
-                  <ArrowRight className="h-4 w-4" />
-                </button>
+                <a 
+                    href={program.link}
+                    target={program.link.startsWith('http') ? '_blank' : '_self'}
+                    rel={program.link.startsWith('http') ? 'noopener noreferrer' : undefined}
+                    className="text-green-400 hover:text-green-300 font-semibold flex items-center space-x-2 group-hover:translate-x-2 transition-transform"
+                  >
+                    <span>Learn More</span>
+                    <ArrowRight className="h-5 w-5" />
+                  </a>
               </div>
             ))}
           </div>
