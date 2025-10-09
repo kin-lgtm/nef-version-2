@@ -12,7 +12,7 @@ import {
   Bird,
   ArrowRight,
 } from 'lucide-react';
-// Define interfaces for data structures
+
 interface HeroSlide {
   title: string;
   subtitle: string;
@@ -34,22 +34,21 @@ interface Program {
 const Homepage: React.FC = () => {
   const [currentSlide, setCurrentSlide] = useState<number>(0);
 
-  // Hero slides data
   const heroSlides: HeroSlide[] = [
     {
       title: 'Conserving Nature for Future Generations',
       subtitle: 'Protecting Sri Lanka\'s Indigenous Environmental Heritage',
-      image: '/images/hero-1.jpg', // Ensure these images are in public/images/
+      image: 'https://images.unsplash.com/photo-1441974231531-c6227db76b6e?w=1600&h=900&fit=crop',
     },
     {
       title: 'Community-Based Environmental Solutions',
       subtitle: 'Working with Local Communities for Sustainable Development',
-      image: '/images/hero-2.jpg',
+      image: 'https://images.unsplash.com/photo-1542601906990-b4d3fb778b09?w=1600&h=900&fit=crop',
     },
     {
       title: 'Indigenous Knowledge & Traditional Practices',
       subtitle: 'Preserving Ancient Wisdom for Modern Conservation',
-      image: '/images/hero-3.jpg',
+      image: 'https://images.unsplash.com/photo-1511497584788-876760111969?w=1600&h=900&fit=crop',
     },
   ];
 
@@ -98,10 +97,8 @@ const Homepage: React.FC = () => {
     setCurrentSlide((prev) => (prev + 1) % heroSlides.length);
   };
 
-  // Get current slide data
   const currentSlideData = heroSlides[currentSlide];
 
-  // Auto-advance slides
   useEffect(() => {
     const timer = setInterval(nextSlide, 5000);
     return () => clearInterval(timer);
@@ -109,65 +106,136 @@ const Homepage: React.FC = () => {
 
   return (
     <div className="min-h-screen flex flex-col">
-      {/* Navigation */}
-      
+      <style>{`
+        @keyframes bounce {
+          0%, 100% { transform: translateY(0); }
+          50% { transform: translateY(-20px); }
+        }
+        
+        @keyframes fadeIn {
+          from { opacity: 0; transform: translateY(20px); }
+          to { opacity: 1; transform: translateY(0); }
+        }
+        
+        .hero-globe {
+          animation: bounce 3s ease-in-out infinite;
+          mix-blend-mode: color-dodge;
+          
+          filter: drop-shadow(0 0 30px rgba(24, 231, 103, 5));
+        }
+        
+        .text-gradient {
+          background: linear-gradient(135deg, #3b82f6 0%, #49f574ff 100%);
+          -webkit-background-clip: text;
+          -webkit-text-fill-color: transparent;
+          background-clip: text;
+        }
+        
+        .hero-text-enter {
+          animation: fadeIn 0.8s ease-out;
+        }
+      `}</style>
 
-      {/* Hero Section */}
-      <div className="relative min-h-[80vh] overflow-hidden">
-        <img
-          src={currentSlideData.image}
-          alt={currentSlideData.title}
-          className="absolute inset-0 w-full h-full object-cover"
-          onError={(e) => {
-            const target = e.target as HTMLImageElement;
-            target.src = 'https://via.placeholder.com/1200x800?text=Image+Not+Found';
-          }}
-        />
-        <div className="absolute inset-0 bg-black/30"></div>
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10 flex items-center min-h-[80vh]">
-          <div className="text-center text-white w-full">
-            <h1 className="text-5xl md:text-6xl font-bold mb-6 leading-tight">
-              {currentSlideData.title}
-            </h1>
-            <p className="text-xl md:text-2xl mb-8 text-white/90 max-w-3xl mx-auto">
-              {currentSlideData.subtitle}
-            </p>
-            <div className="flex flex-col sm:flex-row gap-4 justify-center">
-              <button className="bg-white text-green-800 px-8 py-4 rounded-lg font-semibold hover:bg-green-50 transition-all duration-300 flex items-center justify-center space-x-2 shadow-lg">
+      {/* Enhanced Hero Section */}
+      <div className="relative min-h-screen overflow-hidden bg-gradient-to-br from-green-600 via-green-900 to-green-600">
+        {/* Background Image Layer */}
+        <div className="absolute inset-0">
+          {heroSlides.map((slide, index) => (
+            <div
+              key={index}
+              className={`absolute inset-0 transition-opacity duration-1000 ${
+                currentSlide === index ? 'opacity-30' : 'opacity-0'
+              }`}
+            >
+              <img
+                src={slide.image}
+                alt={slide.title}
+                className="w-full h-full object-cover"
+              />
+            </div>
+          ))}
+          <div className="absolute inset-0 bg-gradient-to-r from-slate-900/90 via-purple-600/20 to-transparent"></div>
+        </div>
+
+        {/* Static Globe and Hand Graphic */}
+        <div className="absolute right-0 bottom-0 w-full h-full pointer-events-none overflow-hidden">
+          <div className="absolute right-[5%] bottom-[10%] w-[50%] max-w-[700px]">
+            {/* Hand and Globe Container */}
+            <div className="relative w-full aspect-square">
+              {/* Hand Image - Static */}
+              <img
+                src="/images/hand.png"
+                alt="Hand"
+                className="absolute w-full h-full object-contain mt-50 ml-25"
+                onError={(e) => {
+                  const target = e.target as HTMLImageElement;
+                  target.style.display = 'none';
+                }}
+              />
+              
+              {/* Globe Image - Animated with bounce and color-dodge */}
+              <img
+                src="./images/globe.png"
+                alt="Globe"
+                className="hero-globe absolute right-[10%] top-[20%] w-[60%] h-auto object-contain"
+                onError={(e) => {
+                  const target = e.target as HTMLImageElement;
+                  target.style.display = 'none';
+                }}
+              />
+            </div>
+          </div>
+        </div>
+
+        {/* Content Layer */}
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10 flex items-center min-h-screen">
+          <div className="w-full max-w-2xl py-20">
+            <div key={currentSlide} className="hero-text-enter">
+              <h1 className="text-5xl md:text-6xl font-bold mb-6 leading-tight text-white">
+                {currentSlideData.title.split(' ').map((word, i) => {
+                  const highlightWords = ['Nature', 'Environmental', 'Indigenous', 'Community-Based', 'Knowledge'];
+                  return highlightWords.some(hw => word.includes(hw.split('-')[0])) ? (
+                    <span key={i} className="text-gradient">{word} </span>
+                  ) : (
+                    <span key={i}>{word} </span>
+                  );
+                })}
+              </h1>
+              <p className="text-xl md:text-2xl mb-8 text-gray-300 leading-relaxed">
+                {currentSlideData.subtitle}
+              </p>
+            </div>
+            
+            <div className="flex flex-col sm:flex-row gap-4">
+              <button className="bg-gradient-to-br from-blue-600/50 to-green-600/40 text-white px-8 py-4 rounded-lg font-semibold hover:bg-blue-700 transition-all duration-300 flex items-center justify-center space-x-2 ">
                 <span>Learn More</span>
                 <ChevronRight className="h-5 w-5" />
               </button>
-              <button className="border-2 border-white text-white px-8 py-4 rounded-lg font-semibold hover:bg-white hover:text-green-800 transition-all duration-300">
-                Join Our Mission
+              <button className="border-2 border-white/30 bg-white/10 backdrop-blur-sm text-white px-8 py-4 rounded-lg font-semibold hover:bg-white/20 hover:border-white/50 transition-all duration-300">
+                Contact Us
               </button>
             </div>
           </div>
         </div>
 
         {/* Slide Navigation */}
-        <div className="absolute bottom-8 left-1/2 transform -translate-x-1/2 flex space-x-2">
+        <div className="absolute bottom-8 left-8 flex space-x-3 z-20">
           {heroSlides.map((_, index) => (
             <button
               key={index}
               onClick={() => setCurrentSlide(index)}
-              className={`w-3 h-3 rounded-full transition-all duration-300 ${
-                currentSlide === index ? 'bg-white' : 'bg-white/50'
+              className={`transition-all duration-300 rounded-full ${
+                currentSlide === index 
+                  ? 'w-12 h-3 bg-blue-500' 
+                  : 'w-3 h-3 bg-white/50 hover:bg-white/70'
               }`}
             />
           ))}
         </div>
-
-        {/* Auto-advance */}
-        <button
-          onClick={nextSlide}
-          className="absolute right-4 top-1/2 transform -translate-y-1/2 text-white/70 hover:text-white transition-colors"
-        >
-          <ChevronRight className="h-8 w-8" />
-        </button>
       </div>
 
       {/* Vision Section */}
-      <section className="py-16 bg-green-50">
+      <section className="py-16 bg-gradient-to-br from-green-600/10 to-green-600/10">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center mb-12">
             <h2 className="text-4xl font-bold text-green-800 mb-4">Our Vision</h2>

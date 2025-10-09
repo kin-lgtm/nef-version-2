@@ -1,20 +1,99 @@
-
 import { useParams, Link } from 'react-router-dom';
 import { ArrowLeft } from 'lucide-react';
-import { blogPosts } from '../lib/blogPosts';
+import { useState, useEffect } from 'react';
+import { doc, getDoc } from 'firebase/firestore';
+import { Timestamp } from 'firebase/firestore';
+import { db } from '../firebase/firebase';
+
+interface BlogPost {
+  id: string; // Changed from number to string
+  title: string;
+  firstDescription: string;
+  date: string;
+  author: string;
+  secondDescription: string;
+  additionalImages: string[];
+  category: string;
+  image: string;
+  readingTime: string;
+  tags: string[];
+}
 
 const BlogDetailPage = () => {
   const { id } = useParams<{ id: string }>();
-  
-  // Find the post by ID
-  const post = blogPosts.find((p) => p.id === parseInt(id || '0'));
+  const [post, setPost] = useState<BlogPost | null>(null);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
 
-  if (!post) {
+  useEffect(() => {
+    const fetchPost = async () => {
+      if (!id) {
+        setError('Invalid blog ID');
+        setLoading(false);
+        return;
+      }
+
+      try {
+        const docRef = doc(db, 'blogs', id);
+        const docSnap = await getDoc(docRef);
+
+        if (docSnap.exists()) {
+          const data = docSnap.data();
+          // Handle different date formats
+          let formattedDate: string;
+          if (data.blog_date instanceof Timestamp) {
+            formattedDate = data.blog_date.toDate().toLocaleDateString();
+          } else if (data.blog_date instanceof Date) {
+            formattedDate = data.blog_date.toLocaleDateString();
+          } else if (typeof data.blog_date === 'string') {
+            formattedDate = new Date(data.blog_date).toLocaleDateString();
+          } else {
+            formattedDate = 'Unknown Date';
+          }
+
+          setPost({
+             id: docSnap.id,  // Use string ID directly
+            title: data.blog_title,
+            firstDescription: data.first_description,
+            date: formattedDate,
+            author: data.blog_author,
+            secondDescription: data.second_description,
+            additionalImages: data.additionalImages || [],
+            category: data.blog_category,
+            image: data.mainImage || 'https://via.placeholder.com/600x400?text=Image+Not+Found',
+            readingTime: data.reading_time,
+            tags: data.tags || [],
+          });
+        } else {
+          setError('Blog post not found');
+        }
+      } catch (err) {
+        console.error('Error fetching blog post:', err);
+        setError('Failed to load blog post');
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchPost();
+  }, [id]);
+
+  if (loading) {
+    return (
+      <div className="min-h-screen bg-gray-50 flex items-center justify-center">
+        <div className="text-center">
+          <h2 className="text-2xl font-bold text-gray-800">Loading...</h2>
+        </div>
+      </div>
+    );
+  }
+
+  if (error || !post) {
     return (
       <div className="min-h-screen bg-gray-50 flex items-center justify-center">
         <div className="text-center">
           <h2 className="text-2xl font-bold text-gray-800">Blog Post Not Found</h2>
-          <p className="text-gray-600 mt-2">The blog post you are looking for does not exist.</p>
+          <p className="text-gray-600 mt-2">{error || 'The blog post you are looking for does not exist.'}</p>
           <Link to="/blog" className="mt-4 inline-flex items-center text-green-600 hover:text-green-800 transition-colors">
             <ArrowLeft className="h-5 w-5 mr-2" /> Back to Blog
           </Link>
@@ -25,7 +104,6 @@ const BlogDetailPage = () => {
 
   return (
     <div className="min-h-screen bg-gray-50">
-     
       {/* Back Button and Title */}
       <section className="py-8 bg-white sticky top-0 z-10">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -132,8 +210,6 @@ const BlogDetailPage = () => {
           </div>
         </div>
       </section>
-
-
     </div>
   );
 };

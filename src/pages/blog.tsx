@@ -1,21 +1,122 @@
-
 import { Link } from 'react-router-dom';
 import { Leaf, Calendar, Search, Globe, TreePine, BookOpen, Heart, Users } from 'lucide-react';
-import { blogPosts } from '../lib/blogPosts';
+import { useState, useEffect } from 'react';
+import { collection, getDocs, query, orderBy } from 'firebase/firestore';
+import { Timestamp } from 'firebase/firestore';
+import { db } from '../firebase/firebase';
+
+interface BlogPost {
+  id: string;
+  title: string;
+  firstDescription: string;
+  date: string;
+  author: string;
+  secondDescription: string;
+  additionalImages: string[];
+  category: string;
+  image: string;
+  readingTime: string;
+  tags: string[];
+}
 
 const BlogPage = () => {
+  const [posts, setPosts] = useState<BlogPost[]>([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
+  const [searchQuery, setSearchQuery] = useState('');
+
+  // Dynamically generate categories with counts
   const categories = [
-    { name: 'Indigenous Knowledge', icon: BookOpen, count: 12 },
-    { name: 'Biodiversity Conservation', icon: TreePine, count: 8 },
-    { name: 'Climate Change', icon: Globe, count: 15 },
-    { name: 'Youth Education', icon: Users, count: 10 },
-    { name: 'Sustainable Development', icon: Leaf, count: 7 },
-    { name: 'Community Action', icon: Heart, count: 9 },
+    { name: 'Indigenous Knowledge', icon: BookOpen, count: posts.filter(p => p.category === 'Indigenous Knowledge').length },
+    { name: 'Biodiversity Conservation', icon: TreePine, count: posts.filter(p => p.category === 'Biodiversity').length },
+    { name: 'Climate Change', icon: Globe, count: posts.filter(p => p.category === 'Climate Change').length },
+    { name: 'Youth Education', icon: Users, count: posts.filter(p => p.category === 'Education').length },
+    { name: 'Sustainable Development', icon: Leaf, count: posts.filter(p => p.category === 'Sustainable Energy').length },
+    { name: 'Community Action', icon: Heart, count: posts.filter(p => p.category === 'Community Action').length },
   ];
+
+  useEffect(() => {
+    const fetchPosts = async () => {
+      try {
+        const q = query(collection(db, 'blogs'), orderBy('createdAt', 'desc'));
+        const querySnapshot = await getDocs(q);
+        const blogPosts: BlogPost[] = [];
+        querySnapshot.forEach((doc) => {
+          const data = doc.data();
+          if (data.status === 'active' && !data.isDeleted) {
+            // Handle different date formats
+            let formattedDate: string;
+            if (data.blog_date instanceof Timestamp) {
+              formattedDate = data.blog_date.toDate().toLocaleDateString();
+            } else if (data.blog_date instanceof Date) {
+              formattedDate = data.blog_date.toLocaleDateString();
+            } else if (typeof data.blog_date === 'string') {
+              formattedDate = new Date(data.blog_date).toLocaleDateString();
+            } else {
+              formattedDate = 'Unknown Date';
+            }
+
+            blogPosts.push({
+              id: doc.id, // Use string ID directly
+              title: data.blog_title,
+              firstDescription: data.first_description,
+              date: formattedDate,
+              author: data.blog_author,
+              secondDescription: data.second_description,
+              additionalImages: data.additionalImages || [],
+              category: data.blog_category,
+              image: data.mainImage || 'https://via.placeholder.com/600x400?text=Image+Not+Found',
+              readingTime: data.reading_time,
+              tags: data.tags || [],
+            });
+          }
+        });
+        setPosts(blogPosts);
+      } catch (err) {
+        console.error('Error fetching blog posts:', err);
+        setError('Failed to load blog posts');
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchPosts();
+  }, []);
+
+  // Filter posts based on search query
+  const filteredPosts = posts.filter(
+    (post) =>
+      post.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
+      post.firstDescription.toLowerCase().includes(searchQuery.toLowerCase()) ||
+      post.category.toLowerCase().includes(searchQuery.toLowerCase())
+  );
+
+  if (loading) {
+    return (
+      <div className="min-h-screen bg-gray-50 flex items-center justify-center">
+        <div className="text-center">
+          <h2 className="text-2xl font-bold text-gray-800">Loading...</h2>
+        </div>
+      </div>
+    );
+  }
+
+  if (error) {
+    return (
+      <div className="min-h-screen bg-gray-50 flex items-center justify-center">
+        <div className="text-center">
+          <h2 className="text-2xl font-bold text-gray-800">Error</h2>
+          <p className="text-gray-600 mt-2">{error}</p>
+          <Link to="/" className="mt-4 inline-flex items-center text-green-600 hover:text-green-800 transition-colors">
+            Back to Home
+          </Link>
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div className="min-h-screen bg-gray-50">
-      
       {/* Hero Section */}
       <div className="bg-gradient-to-r from-green-600 to-black/90 text-white py-20">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -38,6 +139,8 @@ const BlogPage = () => {
                   type="text"
                   placeholder="Search blog posts..."
                   className="w-full py-3 px-4 pl-10 rounded-lg border border-gray-300 focus:outline-none focus:border-green-500"
+                  value={searchQuery}
+                  onChange={(e) => setSearchQuery(e.target.value)}
                 />
                 <Search className="absolute left-3 top-3.5 h-5 w-5 text-gray-400" />
               </div>
@@ -49,7 +152,7 @@ const BlogPage = () => {
                   className="flex items-center space-x-2 px-4 py-2 rounded-full bg-gray-100 hover:bg-green-100 transition-colors whitespace-nowrap"
                 >
                   <cat.icon className="h-4 w-4 text-green-600" />
-                  <span className="text-sm font-medium">{cat.name}</span>
+                  <span className="text-sm font-medium">{cat.name} ({cat.count})</span>
                 </button>
               ))}
             </div>
@@ -61,15 +164,15 @@ const BlogPage = () => {
       <section className="py-16 bg-gray-50">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
-            {blogPosts.map((post) => (
+            {filteredPosts.map((post) => (
               <div
                 key={post.id}
                 className="bg-white shadow-lg overflow-hidden hover:shadow-xl transition-all duration-300 hover:-translate-y-1 flex flex-col"
               >
-                <div className="relative h-120">
-                  <img 
-                    src={post.image} 
-                    alt={post.title} 
+                <div className="relative h-96">
+                  <img
+                    src={post.image}
+                    alt={post.title}
                     className="w-full h-full object-cover"
                     onError={(e) => {
                       const target = e.target as HTMLImageElement;
@@ -133,8 +236,6 @@ const BlogPage = () => {
           </div>
         </div>
       </section>
-
-  
     </div>
   );
 };
