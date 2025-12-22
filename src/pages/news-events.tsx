@@ -1,9 +1,27 @@
-
+import { useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { Calendar, Search, Newspaper, PartyPopper, Megaphone, Award, Users, TreePine } from 'lucide-react';
 import { newsEvents } from '../lib/newsEvents';
 
 const NewsEventsPage = () => {
+  useEffect(() => {
+    const observerOptions = {
+      threshold: 0.1,
+      rootMargin: '0px 0px -50px 0px'
+    };
+
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('animate-in');
+        }
+      });
+    }, observerOptions);
+
+    document.querySelectorAll('.fade-in-section').forEach(el => observer.observe(el));
+
+    return () => observer.disconnect();
+  }, []);
   const categories = [
     { name: 'Events', icon: PartyPopper, count: 10 },
     { name: 'News', icon: Newspaper, count: 8 },
@@ -15,10 +33,22 @@ const NewsEventsPage = () => {
 
   return (
     <div className="min-h-screen bg-gray-50">
+      <style>{`
+        .fade-in-section {
+          opacity: 0;
+          transform: translateY(30px);
+          transition: opacity 0.8s ease-out, transform 0.8s ease-out;
+        }
+        
+        .fade-in-section.animate-in {
+          opacity: 1;
+          transform: translateY(0);
+        }
+      `}</style>
    
       
       {/* Hero Section */}
-      <div className="bg-gradient-to-r from-green-600 to-black/90 text-white py-20">
+      <div className="bg-gradient-to-r from-green-600 to-black/90 text-white py-20 fade-in-section">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center">
             <h1 className="text-5xl md:text-6xl font-bold mb-6">News & Events</h1>
@@ -59,7 +89,7 @@ const NewsEventsPage = () => {
       </section>
 
       {/* News & Events Grid */}
-      <section className="py-16 bg-gray-50">
+      <section className="py-16 bg-gray-50 fade-in-section">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
             {newsEvents.map((item) => (

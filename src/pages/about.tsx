@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import {
   Users,
  
@@ -53,11 +53,42 @@ const AboutPage: React.FC = () => {
     },
   ];
 
+  useEffect(() => {
+    const observerOptions = {
+      threshold: 0.1,
+      rootMargin: '0px 0px -50px 0px'
+    };
+
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('animate-in');
+        }
+      });
+    }, observerOptions);
+
+    document.querySelectorAll('.fade-in-section').forEach(el => observer.observe(el));
+
+    return () => observer.disconnect();
+  }, []);
+
   return (
     <div className="min-h-screen bg-gray-50">
+      <style>{`
+        .fade-in-section {
+          opacity: 0;
+          transform: translateY(30px);
+          transition: opacity 0.8s ease-out, transform 0.8s ease-out;
+        }
+        
+        .fade-in-section.animate-in {
+          opacity: 1;
+          transform: translateY(0);
+        }
+      `}</style>
       
       {/* Hero Section */}
-      <div className="bg-gradient-to-r from-green-600 to-black/90 text-white py-20">
+      <div className="bg-gradient-to-r from-green-600 to-black/90 text-white py-20 fade-in-section">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center">
             <h1 className="text-5xl md:text-6xl font-bold mb-6">About NEF</h1>
@@ -70,7 +101,7 @@ const AboutPage: React.FC = () => {
       </div>
 
       {/* Vision & Mission */}
-      <section className="py-16 bg-white">
+      <section className="py-16 bg-white fade-in-section">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="grid md:grid-cols-2 gap-12 items-center">
             <div>
@@ -98,7 +129,7 @@ const AboutPage: React.FC = () => {
       </section>
 
       {/* Key Objectives */}
-      <section className="py-16 bg-gray-50">
+      <section className="py-16 bg-gray-50 fade-in-section">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center mb-12">
             <h2 className="text-4xl font-bold text-green-800 mb-4">Our Key Objectives</h2>
@@ -129,7 +160,7 @@ const AboutPage: React.FC = () => {
       </section>
 
       {/* Call to Action */}
-      <section className="py-16 bg-green-50">
+      <section className="py-16 bg-green-50 fade-in-section">
         <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
           <h2 className="text-4xl font-bold text-green-800 mb-6">Join Our Environmental Mission</h2>
           <p className="text-xl text-gray-700 mb-8">

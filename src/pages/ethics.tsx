@@ -1,12 +1,43 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 
 
 const EthicsAndCodesPage: React.FC = () => {
+  useEffect(() => {
+    const observerOptions = {
+      threshold: 0.1,
+      rootMargin: '0px 0px -50px 0px'
+    };
+
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('animate-in');
+        }
+      });
+    }, observerOptions);
+
+    document.querySelectorAll('.fade-in-section').forEach(el => observer.observe(el));
+
+    return () => observer.disconnect();
+  }, []);
+
   return (
     <div className="min-h-screen bg-gray-50">
+      <style>{`
+        .fade-in-section {
+          opacity: 0;
+          transform: translateY(30px);
+          transition: opacity 0.8s ease-out, transform 0.8s ease-out;
+        }
+        
+        .fade-in-section.animate-in {
+          opacity: 1;
+          transform: translateY(0);
+        }
+      `}</style>
     
       {/* Hero Section */}
-      <div className="bg-gradient-to-r from-green-600 to-black/90 text-white py-20">
+      <div className="bg-gradient-to-r from-green-600 to-black/90 text-white py-20 fade-in-section">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center">
             <h1 className="text-5xl md:text-6xl font-bold mb-6">Ethics and Codes</h1>
@@ -18,7 +49,7 @@ const EthicsAndCodesPage: React.FC = () => {
       </div>
 
       {/* Constitution Content */}
-      <section className="py-16 bg-white">
+      <section className="py-16 bg-white fade-in-section">
         <div className="w-full mx-auto px-4 sm:px-6 lg:px-8">
           <div className="prose prose-lg max-w-6xl mx-auto">
             <h2 className="text-3xl font-bold text-green-800 mb-2">Preamble</h2>

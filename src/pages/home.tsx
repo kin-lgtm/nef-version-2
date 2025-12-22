@@ -102,6 +102,25 @@ const Homepage: React.FC = () => {
   const currentSlideData = heroSlides[currentSlide];
 
   useEffect(() => {
+    const observerOptions = {
+      threshold: 0.1,
+      rootMargin: '0px 0px -50px 0px'
+    };
+
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('animate-in');
+        }
+      });
+    }, observerOptions);
+
+    document.querySelectorAll('.fade-in-section').forEach(el => observer.observe(el));
+
+    return () => observer.disconnect();
+  }, []);
+
+  useEffect(() => {
     const timer = setInterval(nextSlide, 5000);
     return () => clearInterval(timer);
   }, []);
@@ -117,6 +136,17 @@ const Homepage: React.FC = () => {
         @keyframes fadeIn {
           from { opacity: 0; transform: translateY(20px); }
           to { opacity: 1; transform: translateY(0); }
+        }
+        
+        .fade-in-section {
+          opacity: 0;
+          transform: translateY(30px);
+          transition: opacity 0.8s ease-out, transform 0.8s ease-out;
+        }
+        
+        .fade-in-section.animate-in {
+          opacity: 1;
+          transform: translateY(0);
         }
         
         .hero-globe {
@@ -273,7 +303,7 @@ const Homepage: React.FC = () => {
       </section> */}
 
       {/* Key Objectives */}
-      <section className="py-16 bg-white">
+      <section className="py-16 bg-white fade-in-section">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center mb-12">
             <h2 className="text-4xl font-bold text-green-800 mb-4">Key Objectives</h2>
@@ -301,7 +331,7 @@ const Homepage: React.FC = () => {
       </section>
 
       {/* Programs Section */}
-      <section className="py-16 text-white bg-[#3c3c3c]">
+      <section className="py-16 text-white bg-[#3c3c3c] fade-in-section">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center mb-12">
             <h2 className="text-4xl font-bold mb-4">Our Programs</h2>
@@ -335,7 +365,7 @@ const Homepage: React.FC = () => {
       </section>
 
       {/* Call to Action */}
-      <section className="py-16 bg-green-50">
+      <section className="py-16 bg-green-50 fade-in-section">
         <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
           <h2 className="text-4xl font-bold text-green-800 mb-6">Join Our Environmental Mission</h2>
           <p className="text-xl text-gray-700 mb-8">

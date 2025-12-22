@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 // Adjust path if using aliases (e.g., '@/components/Footer')
 import { 
   MapPin, 
@@ -11,12 +11,43 @@ import {
 } from 'lucide-react';
 
 const ContactPage: React.FC = () => {
+  useEffect(() => {
+    const observerOptions = {
+      threshold: 0.1,
+      rootMargin: '0px 0px -50px 0px'
+    };
+
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('animate-in');
+        }
+      });
+    }, observerOptions);
+
+    document.querySelectorAll('.fade-in-section').forEach(el => observer.observe(el));
+
+    return () => observer.disconnect();
+  }, []);
+
   return (
     <div className="min-h-screen flex flex-col">
+      <style>{`
+        .fade-in-section {
+          opacity: 0;
+          transform: translateY(30px);
+          transition: opacity 0.8s ease-out, transform 0.8s ease-out;
+        }
+        
+        .fade-in-section.animate-in {
+          opacity: 1;
+          transform: translateY(0);
+        }
+      `}</style>
     
       <main className="flex-grow">
         {/* Hero Section */}
-        <section className="bg-gradient-to-r from-green-600 to-black/90 text-white py-20">
+        <section className="bg-gradient-to-r from-green-600 to-black/90 text-white py-20 fade-in-section">
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
             <h1 className="text-5xl md:text-6xl font-bold mb-6">Contact Us</h1>
             <p className="text-xl md:text-2xl text-green-100 max-w-3xl mx-auto leading-relaxed">
@@ -26,7 +57,7 @@ const ContactPage: React.FC = () => {
         </section>
 
         {/* Contact Information */}
-        <section className="py-16 bg-gray-50">
+        <section className="py-16 bg-gray-50 fade-in-section">
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div className="grid md:grid-cols-2 gap-12">
               {/* Contact Details */}
@@ -133,11 +164,17 @@ const ContactPage: React.FC = () => {
         <section className="py-16 bg-green-50">
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <h2 className="text-2xl font-bold text-green-800 text-center mb-6">Find Us on the Map</h2>
-            <div className="aspect-video bg-gray-300 rounded-xl overflow-hidden">
-              {/* Placeholder for map - Replace with actual map integration (e.g., Google Maps) */}
-              <div className="h-full flex items-center justify-center text-gray-600">
-                Map Placeholder (Integrate Google Maps API here)
-              </div>
+            <div className="aspect-video bg-gray-300 rounded-xl overflow-hidden shadow-lg">
+              <iframe
+                src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3957.5!2d80.5954!3d7.2571!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3ae3662e2c1a6739%3A0x3b80a2d6f7f5e1!2sUniversity%20of%20Peradeniya!5e0!3m2!1sen!2slk!4v1234567890123!5m2!1sen!2slk&markers=color:red%7Clabel:NEF%7C7.2571,80.5954"
+                width="100%"
+                height="100%"
+                style={{ border: 0 }}
+                allowFullScreen
+                loading="lazy"
+                referrerPolicy="no-referrer-when-downgrade"
+                title="University of Peradeniya Location"
+              />
             </div>
           </div>
         </section>

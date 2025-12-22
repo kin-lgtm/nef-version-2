@@ -1,4 +1,4 @@
-
+import { useEffect } from 'react';
 import { useParams, Link } from 'react-router-dom';
 import { ArrowLeft, Calendar, MapPin, Clock } from 'lucide-react';
 import { newsEvents } from '../lib/newsEvents';
@@ -8,6 +8,25 @@ const NewsEventDetailPage = () => {
   
   // Find the item by ID
   const item = newsEvents.find((p) => p.id === parseInt(id || '0'));
+
+  useEffect(() => {
+    const observerOptions = {
+      threshold: 0.1,
+      rootMargin: '0px 0px -50px 0px'
+    };
+
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('animate-in');
+        }
+      });
+    }, observerOptions);
+
+    document.querySelectorAll('.fade-in-section').forEach(el => observer.observe(el));
+
+    return () => observer.disconnect();
+  }, [item]);
 
   if (!item) {
     return (
@@ -25,6 +44,18 @@ const NewsEventDetailPage = () => {
 
   return (
     <div className="min-h-screen bg-gray-50">
+      <style>{`
+        .fade-in-section {
+          opacity: 0;
+          transform: translateY(30px);
+          transition: opacity 0.8s ease-out, transform 0.8s ease-out;
+        }
+        
+        .fade-in-section.animate-in {
+          opacity: 1;
+          transform: translateY(0);
+        }
+      `}</style>
       {/* Back Button */}
       <section className="py-8 bg-white sticky top-0 z-10 shadow-md">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -35,7 +66,7 @@ const NewsEventDetailPage = () => {
       </section>
 
       {/* Three-Column Content */}
-      <section className="bg-gray-50 mb-20">
+      <section className="bg-gray-50 mb-20 fade-in-section">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="grid md:grid-cols-3 gap-8">
             {/* Main Content (Spans first 2 columns) */}
