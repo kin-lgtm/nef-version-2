@@ -1,16 +1,14 @@
 import React, { useState, useEffect } from 'react';
+import { Link } from 'react-router-dom';
 import {
   Users,
-  BookOpen,
   ChevronRight,
-  Globe,
   Award,
   Calendar,
   TreePine,
   Droplets,
   Mountain,
   Bird,
-  ArrowRight,
 } from 'lucide-react';
 
 interface HeroSlide {
@@ -211,13 +209,13 @@ const Homepage: React.FC = () => {
             </div>
             
             <div className="flex flex-col sm:flex-row gap-4">
-              <button className="bg-gradient-to-br from-blue-600/50 to-green-600/40 text-white px-8 py-4 rounded-lg font-semibold hover:bg-blue-700 transition-all duration-300 flex items-center justify-center space-x-2 ">
+              <Link to="/about" className="bg-gradient-to-br from-blue-600/50 to-green-600/40 text-white px-8 py-4 rounded-lg font-semibold hover:bg-blue-700 transition-all duration-300 flex items-center justify-center space-x-2 ">
                 <span>Learn More</span>
                 <ChevronRight className="h-5 w-5" />
-              </button>
-              <button className="border-2 border-white/30 bg-white/10 backdrop-blur-sm text-white px-8 py-4 rounded-lg font-semibold hover:bg-white/20 hover:border-white/50 transition-all duration-300">
+              </Link>
+              <Link to="/contact" className="border-2 border-white/30 bg-white/10 backdrop-blur-sm text-white px-8 py-4 rounded-lg font-semibold hover:bg-white/20 hover:border-white/50 transition-all duration-300">
                 Contact Us
-              </button>
+              </Link>
             </div>
           </div>
         </div>
@@ -303,7 +301,7 @@ const Homepage: React.FC = () => {
       </section>
 
       {/* Programs Section */}
-      <section className="py-16 text-white bg-gradient-to-br from-blue-500 via-green-900/80 to-green-600">
+      <section className="py-16 text-white bg-[#3c3c3c]">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center mb-12">
             <h2 className="text-4xl font-bold mb-4">Our Programs</h2>
@@ -325,10 +323,10 @@ const Homepage: React.FC = () => {
                     href={program.link}
                     target={program.link.startsWith('http') ? '_blank' : '_self'}
                     rel={program.link.startsWith('http') ? 'noopener noreferrer' : undefined}
-                    className="text-green-400 hover:text-green-300 font-semibold flex items-center space-x-2 group-hover:translate-x-2 transition-transform"
+                    className="text-white hover:text-green-300 font-semibold flex items-center space-x-2 group-hover:translate-x-2 transition-transform"
                   >
                     <span>Learn More</span>
-                    <ArrowRight className="h-5 w-5" />
+                    
                   </a>
               </div>
             ))}

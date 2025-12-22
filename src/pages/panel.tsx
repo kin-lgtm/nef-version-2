@@ -22,7 +22,7 @@ const NEFPanelPage: React.FC = () => {
       role: "Chairperson",
       expertise: "Leadership & Environmental Governance",
       department: "Environmental Policy & Administration",
-      image: "/images/team-1.png", // Placeholder; replace with actual image
+      image: "/images/team-1.jfif", // Placeholder; replace with actual image
       facebook: "#",
       linkedin: "#",
       x: "#",
@@ -34,7 +34,7 @@ const NEFPanelPage: React.FC = () => {
       role: "Core Member",
       expertise: "Strategic Conservation & Ecology",
       department: "Zoology / Botany",
-      image: "/images/team-1.png",
+      image: "/images/team-2.jpeg",
       facebook: "https://facebook.com/ruchira.somaweera",
       linkedin: "https://linkedin.com/in/ruchira-somaweera",
       x: "https://x.com/ruchirasomaweera",
@@ -44,7 +44,7 @@ const NEFPanelPage: React.FC = () => {
       role: "Core Member",
       expertise: "Forest Ecology & Habitat Restoration",
       department: "Crop Science / Botany",
-      image: "/images/team-1.png",
+      image: "/images/team-3.jpg",
       facebook: "#",
       linkedin: "https://linkedin.com/in/gamini-pushpakumara",
       x: "#",
@@ -54,7 +54,7 @@ const NEFPanelPage: React.FC = () => {
       role: "Core Member",
       expertise: "Environmental Engineering & Waste Management",
       department: "Civil Engineering / Water Engineering",
-      image: "/images/team-1.png",
+      image: "/images/team-4.jpg",
       facebook: "#",
       linkedin: "https://linkedin.com/in/induka-werellagama",
       x: "#",
@@ -64,52 +64,16 @@ const NEFPanelPage: React.FC = () => {
       role: "Core Member",
       expertise: "Community Engagement & Sociology",
       department: "Sociology / Environmental Studies",
-      image: "/images/team-1.png",
+      image: "/images/team-5.png",
       facebook: "#",
       linkedin: "#",
       x: "#",
     },
     // Bottom Row: Core Members (only 4 as specified; others can be added)
-    {
-      name: "Dr. Ruchira Somaweera",
-      role: "Core Member",
-      expertise: "Strategic Conservation & Ecology",
-      department: "Zoology / Botany",
-      image: "/images/team-1.png",
-      facebook: "https://facebook.com/ruchira.somaweera",
-      linkedin: "https://linkedin.com/in/ruchira-somaweera",
-      x: "https://x.com/ruchirasomaweera",
-    },
-    {
-      name: "Prof. Gamini Pushpakumara",
-      role: "Core Member",
-      expertise: "Forest Ecology & Habitat Restoration",
-      department: "Crop Science / Botany",
-      image: "/images/team-1.png",
-      facebook: "#",
-      linkedin: "https://linkedin.com/in/gamini-pushpakumara",
-      x: "#",
-    },
-    {
-      name: "Prof. Induka Werellagama",
-      role: "Core Member",
-      expertise: "Environmental Engineering & Waste Management",
-      department: "Civil Engineering / Water Engineering",
-      image: "/images/team-1.png",
-      facebook: "#",
-      linkedin: "https://linkedin.com/in/induka-werellagama",
-      x: "#",
-    },
-    {
-      name: "Dr. Sumedha Weerawardena",
-      role: "Core Member",
-      expertise: "Community Engagement & Sociology",
-      department: "Sociology / Environmental Studies",
-      image: "/images/team-1.png",
-      facebook: "#",
-      linkedin: "#",
-      x: "#",
-    },
+    
+    
+    
+    
     // Add more core members if needed (e.g., for Biodiversity & Wildlife Management)
   ];
 
@@ -143,7 +107,7 @@ const NEFPanelPage: React.FC = () => {
               <div key={index} className="mx-auto max-w-xs"> {/* Centered with max width */}
                 <div className="">
                   <div className="text-center">
-                    <div className="w-full h-100 overflow-hidden rounded-lg mb-4">
+                    <div className="w-full h-100 overflow-hidden mb-4">
                       <img
                         src={member.image}
                         alt={`${member.name}'s profile`}
@@ -181,7 +145,7 @@ const NEFPanelPage: React.FC = () => {
             {panelMembers.filter(member => member.role === "Core Member").slice(0, 8).map((member, index) => (
               <div key={index} className="">
                 <div className="text-center">
-                  <div className="w-full h-100 overflow-hidden rounded-lg mb-4">
+                  <div className="w-full h-100 overflow-hidden mb-4">
                     <img
                       src={member.image}
                       alt={`${member.name}'s profile`}
