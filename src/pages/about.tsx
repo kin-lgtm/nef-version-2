@@ -1,12 +1,9 @@
 import React, { useEffect } from 'react';
 import {
   Users,
- 
   BookOpen,
   Globe,
-
   TreePine,
- 
   Lightbulb,
   Shield,
 } from 'lucide-react';
@@ -100,36 +97,79 @@ const AboutPage: React.FC = () => {
         </div>
       </div>
 
-      {/* Vision & Mission */}
+      {/* About Us Story Section */}
       <section className="py-16 bg-white fade-in-section">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="grid md:grid-cols-2 gap-12 items-center">
+            {/* Image on the left */}
+            <div className="flex-shrink-0">
+              <img 
+                src="/images/about-story.jpg" 
+                alt="About NEF Story"
+                className="w-full h-96 object-cover"
+              />
+            </div>
+
+            {/* Content on the right */}
             <div>
-              <h2 className="text-4xl font-bold text-green-800 mb-6">Our Vision</h2>
-              <div className="bg-green-100 p-6 rounded-xl">
+              <h2 className="text-4xl font-bold text-green-800 mb-6">Our Story</h2>
+              <div className="space-y-4">
                 <p className="text-gray-700 leading-relaxed">
-                  Our vision represents our commitment to environmental stewardship, ensuring that Sri Lanka's rich
-                  biodiversity and indigenous ecological knowledge are preserved for future generations.
+                  The National Environmental Forum (NEF) founded in 1999 as a voluntary non-profit non-governmental organization, on development, promotion and implement of environmental based principles; contriving towards last solution to the environmental problems in Sri Lanka through the community participation upon expert guidance. NEF manned by professionals and other citizens qualified in various environment related disciplines. Among them are senior university academics as well as officers attached to a number of national and private organizations.
                 </p>
+                <p className="text-gray-700 leading-relaxed">
+                  Today, NEF stands as Sri Lanka's premier environmental protection assembly, continuing our commitment to safeguarding our 
+                  natural heritage for generations to come.
+                </p>
+              </div>
+              
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* Vision & Mission */}
+      <section className="py-16 bg-gray-50 fade-in-section">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="grid md:grid-cols-2 gap-12 items-center">
+            {/* Content on the left */}
+            <div>
+              <div className="mb-8">
+                <h2 className="text-4xl font-bold text-green-800 mb-4 ">Our Vision</h2>
+                <div className="rounded-xl">
+                  <p className="text-gray-700 leading-relaxed">
+                    Our vision represents our commitment to environmental stewardship, ensuring that Sri Lanka's rich
+                    biodiversity and indigenous ecological knowledge are preserved for future generations.
+                  </p>
+                </div>
+              </div>
+
+              <div>
+                <h2 className="text-4xl font-bold text-green-800 mb-4">Our Mission</h2>
+                <div className=" rounded-xl">
+                  <p className="text-gray-700 leading-relaxed mb-4">
+                    To advise on promotion and development of environmental-based principles, working toward lasting
+                    solutions to environmental problems in Sri Lanka through community participation and expert
+                    guidance as a non-profit organization.
+                  </p>
+                </div>
               </div>
             </div>
 
-            <div>
-              <h2 className="text-4xl font-bold text-blue-900 mb-6">Our Mission</h2>
-              <div className="bg-blue-100 p-6 rounded-xl">
-                <p className="text-gray-700 leading-relaxed mb-4">
-                  To advise on promotion and development of environmental-based principles, working toward lasting
-                  solutions to environmental problems in Sri Lanka through community participation and expert
-                  guidance as a non-profit organization.
-                </p>
-              </div>
+            {/* Image on the right */}
+            <div className="flex-shrink-0">
+              <img 
+                src="/images/vision-mission.jpg" 
+                alt="Vision & Mission"
+                className="w-full h-96 rounded-xl shadow-lg object-cover"
+              />
             </div>
           </div>
         </div>
       </section>
 
       {/* Key Objectives */}
-      <section className="py-16 bg-gray-50 fade-in-section">
+      <section className="py-16 bg-white fade-in-section">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center mb-12">
             <h2 className="text-4xl font-bold text-green-800 mb-4">Our Key Objectives</h2>
@@ -145,13 +185,13 @@ const AboutPage: React.FC = () => {
               return (
                 <div
                   key={index}
-                  className="bg-white p-6 rounded-xl shadow-lg hover:shadow-xl transition-all duration-300 hover:-translate-y-1"
+                  className="bg-[#3c3c3c] p-6 rounded-lg shadow-lg hover:shadow-xl transition-all duration-300 align-middle"
                 >
-                  <div className="bg-green-100 p-3 rounded-full w-fit mb-4">
-                    <IconComponent className="h-8 w-8 text-green-600" />
+                  <div className="p-3  w-fit mb-4 text-center">
+                    <IconComponent className="h-8 w-8 text-green-600 " />
                   </div>
-                  <h3 className="text-xl font-semibold text-green-800 mb-3">{objective.title}</h3>
-                  <p className="text-gray-600 leading-relaxed">{objective.description}</p>
+                  <h3 className="text-xl font-semibold text-white mb-3">{objective.title}</h3>
+                  <p className="text-white leading-relaxed">{objective.description}</p>
                 </div>
               );
             })}
@@ -174,18 +214,10 @@ const AboutPage: React.FC = () => {
               <Users className="h-5 w-5" />
               <span>Become a Member</span>
             </button>
-            <button
-              className="border-2 border-green-600 text-green-600 px-8 py-4 rounded-lg font-semibold hover:bg-green-600 hover:text-white transition-all duration-300 flex items-center justify-center space-x-2"
-            >
-              <BookOpen className="h-5 w-5" />
-              <span>Learn More About Our Work</span>
-            </button>
+            
           </div>
         </div>
       </section>
-
-      {/* Footer */}
-    
     </div>
   );
 };
