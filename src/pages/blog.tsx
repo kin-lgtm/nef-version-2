@@ -226,7 +226,7 @@ const BlogPage = () => {
                     </div>
                     <div className="flex justify-center mt-10">
                       <Link to={`/blog/${post.id}`}>
-                        <button className="bg-green-600 hover:bg-red-700 text-white px-6 py-4 font-semibold text-sm transition-all duration-300">
+                        <button className="bg-green-600 hover:bg-green-700 text-white px-6 py-4 font-semibold text-sm transition-all duration-300">
                           KNOW MORE
                         </button>
                       </Link>
