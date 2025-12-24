@@ -2,16 +2,16 @@ import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import {
   Award,
-  Calendar,
+  // Calendar,
   TreePine,
   Droplets,
   Mountain,
   Bird,
-  ArrowRight,
+  // ArrowRight,
 } from 'lucide-react';
-import { collection, getDocs, query} from 'firebase/firestore';
-import { Timestamp } from 'firebase/firestore';
-import { db } from '../firebase/firebase';
+// import { collection, getDocs, query, orderBy } from 'firebase/firestore';
+// import { Timestamp } from 'firebase/firestore';
+// import { db } from '../firebase/firebase';
 
 interface HeroSlide {
   title: string;
@@ -32,21 +32,21 @@ interface Program {
   link: string;
 }
 
-interface BlogPost {
-  id: string;
-  title: string;
-  firstDescription: string;
-  date: string;
-  author: string;
-  category: string;
-  image: string;
-  readingTime: string;
-}
+// interface BlogPost {
+//   id: string;
+//   title: string;
+//   firstDescription: string;
+//   date: string;
+//   author: string;
+//   category: string;
+//   image: string;
+//   readingTime: string;
+// }
 
 const Homepage: React.FC = () => {
   const [currentSlide, setCurrentSlide] = useState<number>(0);
-  const [blogPosts, setBlogPosts] = useState<BlogPost[]>([]);
-  const [loadingBlogs, setLoadingBlogs] = useState(true);
+  // const [blogPosts, setBlogPosts] = useState<BlogPost[]>([]);
+  // const [loadingBlogs, setLoadingBlogs] = useState(true);
 
   const heroSlides: HeroSlide[] = [
     {
@@ -140,49 +140,49 @@ const Homepage: React.FC = () => {
     return () => clearInterval(timer);
   }, []);
 
-  useEffect(() => {
-    const fetchBlogPosts = async () => {
-      try {
-        const q = query(collection(db, 'blogs')); // Remove orderBy to test
-        const querySnapshot = await getDocs(q);
-        const posts: BlogPost[] = [];
-        querySnapshot.forEach((doc) => {
-          const data = doc.data();
-          if (data.status === 'active' && !data.isDeleted) {
-            // Handle different date formats
-            let formattedDate: string;
-            if (data.blog_date instanceof Timestamp) {
-              formattedDate = data.blog_date.toDate().toLocaleDateString();
-            } else if (data.blog_date instanceof Date) {
-              formattedDate = data.blog_date.toLocaleDateString();
-            } else if (typeof data.blog_date === 'string') {
-              formattedDate = new Date(data.blog_date).toLocaleDateString();
-            } else {
-              formattedDate = 'Unknown Date';
-            }
+  // useEffect(() => {
+  //   const fetchBlogPosts = async () => {
+  //     try {
+  //       const q = query(collection(db, 'blogs'), orderBy('createdAt', 'desc'));
+  //       const querySnapshot = await getDocs(q);
+  //       const posts: BlogPost[] = [];
+  //       querySnapshot.forEach((doc) => {
+  //         const data = doc.data();
+  //         if (data.status === 'active' && !data.isDeleted) {
+  //           // Handle different date formats
+  //           let formattedDate: string;
+  //           if (data.blog_date instanceof Timestamp) {
+  //             formattedDate = data.blog_date.toDate().toLocaleDateString();
+  //           } else if (data.blog_date instanceof Date) {
+  //             formattedDate = data.blog_date.toLocaleDateString();
+  //           } else if (typeof data.blog_date === 'string') {
+  //             formattedDate = new Date(data.blog_date).toLocaleDateString();
+  //           } else {
+  //             formattedDate = 'Unknown Date';
+  //           }
 
-            posts.push({
-              id: doc.id,
-              title: data.blog_title,
-              firstDescription: data.first_description,
-              date: formattedDate,
-              author: data.blog_author,
-              category: data.blog_category,
-              image: data.mainImage || 'https://via.placeholder.com/600x400?text=Image+Not+Found',
-              readingTime: data.reading_time,
-            });
-          }
-        });
-        setBlogPosts(posts);
-      } catch (err) {
-        console.error('Error fetching blog posts:', err);
-      } finally {
-        setLoadingBlogs(false);
-      }
-    };
+  //           posts.push({
+  //             id: doc.id,
+  //             title: data.blog_title,
+  //             firstDescription: data.first_description,
+  //             date: formattedDate,
+  //             author: data.blog_author,
+  //             category: data.blog_category,
+  //             image: data.mainImage || 'https://via.placeholder.com/600x400?text=Image+Not+Found',
+  //             readingTime: data.reading_time,
+  //           });
+  //         }
+  //       });
+  //       setBlogPosts(posts);
+  //     } catch (err) {
+  //       console.error('Error fetching blog posts:', err);
+  //     } finally {
+  //       setLoadingBlogs(false);
+  //     }
+  //   };
 
-    fetchBlogPosts();
-  }, []);
+  //   fetchBlogPosts();
+  // }, []);
 
   return (
     <div className="min-h-screen flex flex-col">
@@ -410,7 +410,7 @@ const Homepage: React.FC = () => {
       </section>
 
       {/* Blog Preview Section */}
-      <section className="py-16 bg-gray-50 fade-in-section">
+      {/* <section className="py-16 bg-gray-50 fade-in-section">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center mb-12">
             <h2 className="text-4xl font-bold text-green-800 mb-4">Latest from Our Blog</h2>
@@ -468,7 +468,7 @@ const Homepage: React.FC = () => {
                 ))}
               </div>
 
-              {/* View All Blogs Button */}
+             
               <div className="text-center mt-12">
                 <Link to="/blog" className="inline-flex items-center space-x-2 bg-green-600 text-white px-8 py-4 rounded-lg font-semibold hover:bg-green-700 transition-all duration-300">
                   <span>View All Blog Posts</span>
@@ -478,7 +478,7 @@ const Homepage: React.FC = () => {
             </>
           )}
         </div>
-      </section>
+      </section> */}
 
       
 
