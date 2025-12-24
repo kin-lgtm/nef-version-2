@@ -54,53 +54,69 @@ const BlogPage = () => {
     return () => observer.disconnect();
   }, []);
 
-  useEffect(() => {
-    const fetchPosts = async () => {
-      try {
-        const q = query(collection(db, 'blogs'), orderBy('createdAt', 'desc'));
-        const querySnapshot = await getDocs(q);
-        const blogPosts: BlogPost[] = [];
-        querySnapshot.forEach((doc) => {
-          const data = doc.data();
-          if (data.status === 'active' && !data.isDeleted) {
-            // Handle different date formats
-            let formattedDate: string;
-            if (data.blog_date instanceof Timestamp) {
-              formattedDate = data.blog_date.toDate().toLocaleDateString();
-            } else if (data.blog_date instanceof Date) {
-              formattedDate = data.blog_date.toLocaleDateString();
-            } else if (typeof data.blog_date === 'string') {
-              formattedDate = new Date(data.blog_date).toLocaleDateString();
-            } else {
-              formattedDate = 'Unknown Date';
-            }
+  // Replace the fetchPosts useEffect in your BlogPage with this:
 
-            blogPosts.push({
-              id: doc.id, // Use string ID directly
-              title: data.blog_title,
-              firstDescription: data.first_description,
-              date: formattedDate,
-              author: data.blog_author,
-              secondDescription: data.second_description,
-              additionalImages: data.additionalImages || [],
-              category: data.blog_category,
-              image: data.mainImage || 'https://via.placeholder.com/600x400?text=Image+Not+Found',
-              readingTime: data.reading_time,
-              tags: data.tags || [],
-            });
+useEffect(() => {
+  const fetchPosts = async () => {
+    try {
+      setLoading(true);
+      setError(null);
+      
+      // IMPORTANT: Match exactly what works in Homepage
+      const q = query(
+        collection(db, 'blogs'), 
+        orderBy('createdAt', 'desc')
+        // Remove limit(3) if you want all posts on blog page
+      );
+      
+      const querySnapshot = await getDocs(q);
+      const blogPosts: BlogPost[] = [];
+      
+      querySnapshot.forEach((doc) => {
+        const data = doc.data();
+        
+        // Only include active posts
+        if (data.status === 'active' && !data.isDeleted) {
+          let formattedDate: string;
+          if (data.blog_date instanceof Timestamp) {
+            formattedDate = data.blog_date.toDate().toLocaleDateString();
+          } else if (data.blog_date instanceof Date) {
+            formattedDate = data.blog_date.toLocaleDateString();
+          } else if (typeof data.blog_date === 'string') {
+            formattedDate = new Date(data.blog_date).toLocaleDateString();
+          } else {
+            formattedDate = 'Unknown Date';
           }
-        });
-        setPosts(blogPosts);
-      } catch (err) {
-        console.error('Error fetching blog posts:', err);
-        setError('Failed to load blog posts');
-      } finally {
-        setLoading(false);
-      }
-    };
 
-    fetchPosts();
-  }, []);
+          blogPosts.push({
+            id: doc.id,
+            title: data.blog_title,
+            firstDescription: data.first_description,
+            date: formattedDate,
+            author: data.blog_author,
+            secondDescription: data.second_description,
+            additionalImages: data.additionalImages || [],
+            category: data.blog_category,
+            image: data.mainImage || 'https://via.placeholder.com/600x400?text=Image+Not+Found',
+            readingTime: data.reading_time,
+            tags: data.tags || [],
+          });
+        }
+      });
+      
+      console.log('BlogPage fetched posts:', blogPosts.length); // Debug
+      setPosts(blogPosts);
+      
+    } catch (err) {
+      console.error('Error fetching blog posts:', err);
+      setError('Failed to load blog posts');
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  fetchPosts();
+}, []);
 
   // Filter posts based on search query
   const filteredPosts = posts.filter(
