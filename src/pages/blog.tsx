@@ -1,7 +1,7 @@
 import { Link } from 'react-router-dom';
 import { Leaf, Calendar, Search, Globe, TreePine, BookOpen, Heart, Users } from 'lucide-react';
 import { useState, useEffect } from 'react';
-import { collection, getDocs, query } from 'firebase/firestore';
+import { collection, getDocs, query, orderBy, limit } from 'firebase/firestore';
 import { Timestamp } from 'firebase/firestore';
 import { db } from '../firebase/firebase';
 
@@ -57,7 +57,7 @@ const BlogPage = () => {
   useEffect(() => {
     const fetchPosts = async () => {
       try {
-        const q = query(collection(db, 'blogs'));
+        const q = query(collection(db, 'blogs'), orderBy('createdAt', 'desc'), limit(3));
         const querySnapshot = await getDocs(q);
         const blogPosts: BlogPost[] = [];
         querySnapshot.forEach((doc) => {
