@@ -75,14 +75,14 @@ const ContactPage: React.FC = () => {
                     <Mail className="h-6 w-6 text-green-600" />
                     <div>
                       <h3 className="font-medium text-gray-700">Email</h3>
-                      <p className="text-gray-600">info@nef-srilanka.org</p>
+                      <p className="text-gray-600">info@nefsrilanka.org</p>
                     </div>
                   </div>
                   <div className="flex items-center space-x-4">
                     <Phone className="h-6 w-6 text-green-600" />
                     <div>
                       <h3 className="font-medium text-gray-700">Phone</h3>
-                      <p className="text-gray-600">+94 XX XXX XXXX</p>
+                      <p className="text-gray-600">+94 812388975</p>
                     </div>
                   </div>
                   <div className="flex space-x-4 mt-6">
