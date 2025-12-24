@@ -1,7 +1,7 @@
 import { Link } from 'react-router-dom';
 import { Leaf, Calendar, Search, Globe, TreePine, BookOpen, Heart, Users } from 'lucide-react';
 import { useState, useEffect } from 'react';
-import { collection, getDocs, query, orderBy } from 'firebase/firestore';
+import { collection, getDocs, query } from 'firebase/firestore';
 import { Timestamp } from 'firebase/firestore';
 import { db } from '../firebase/firebase';
 
@@ -63,11 +63,7 @@ useEffect(() => {
       setError(null);
       
       // IMPORTANT: Match exactly what works in Homepage
-      const q = query(
-        collection(db, 'blogs'), 
-        orderBy('createdAt', 'desc')
-        // Remove limit(3) if you want all posts on blog page
-      );
+      const q = query(collection(db, 'blogs'));
       
       const querySnapshot = await getDocs(q);
       const blogPosts: BlogPost[] = [];
