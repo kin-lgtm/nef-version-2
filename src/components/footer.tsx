@@ -1,6 +1,5 @@
 import React from 'react';
 import { 
-  Leaf, 
   MapPin, 
   Mail, 
   Phone, 
@@ -17,8 +16,14 @@ const Footer: React.FC = () => {
           {/* Organization Info */}
           <div className="space-y-4">
             <div className="flex items-center space-x-3">
-              <div className="bg-white p-2 rounded-full">
-                <Leaf className="h-6 w-6 text-green-700" />
+              <div className="p-2 rounded-full">
+                <img
+                src="/logo.JPG"
+                alt="NEF Logo"
+                width={50}
+                height={50}
+                className="object-contain rounded-full"
+              />
               </div>
               <div>
                 <h3 className="text-lg font-bold">NEF</h3>
@@ -32,7 +37,7 @@ const Footer: React.FC = () => {
 
           {/* Quick Links */}
           <div className="space-y-4">
-            <h4 className="text-lg font-semibold">Quick Links</h4>
+            
             {/* <ul className="space-y-2">
               <li><a href="/" className="text-green-100 hover:text-white transition-colors">Home</a></li>
               <li><a href="/about" className="text-green-100 hover:text-white transition-colors">About Us</a></li>
@@ -59,15 +64,15 @@ const Footer: React.FC = () => {
             <div className="space-y-3">
               <div className="flex items-center space-x-3">
                 <MapPin className="h-5 w-5 text-green-300 flex-shrink-0" />
-                <span className="text-green-100 text-sm">NEF National Center, Peradeniya, Sri Lanka</span>
+                <span className="text-green-100 text-sm">National Environmental Forum University Vihara, Peradeniya - 20400 Sri Lanka</span>
               </div>
               <div className="flex items-center space-x-3">
                 <Mail className="h-5 w-5 text-green-300 flex-shrink-0" />
-                <span className="text-green-100 text-sm">info@nef-srilanka.org</span>
+                <span className="text-green-100 text-sm">info@nefsrilanka.org</span>
               </div>
               <div className="flex items-center space-x-3">
                 <Phone className="h-5 w-5 text-green-300 flex-shrink-0" />
-                <span className="text-green-100 text-sm">+94 XX XXX XXXX</span>
+                <span className="text-green-100 text-sm">+94 812388975</span>
               </div>
             </div>
             
@@ -90,7 +95,7 @@ const Footer: React.FC = () => {
         <div className="border-t border-green-700 mt-8 pt-8">
           <div className="flex flex-col md:flex-row justify-between items-center">
             <p className="text-green-200 text-sm">
-              © 2024 National Environmental Forum (NEF). All rights reserved.
+              © 2025 National Environmental Forum (NEF). All rights reserved.
             </p>
             <p className="text-green-200 text-sm mt-2 md:mt-0">
               Established 2012 | Protecting Sri Lankas Natural Heritage
