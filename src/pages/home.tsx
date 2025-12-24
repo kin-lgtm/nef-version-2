@@ -9,7 +9,7 @@ import {
   Bird,
   ArrowRight,
 } from 'lucide-react';
-import { collection, getDocs, query, orderBy } from 'firebase/firestore';
+import { collection, getDocs, query} from 'firebase/firestore';
 import { Timestamp } from 'firebase/firestore';
 import { db } from '../firebase/firebase';
 
@@ -143,7 +143,7 @@ const Homepage: React.FC = () => {
   useEffect(() => {
     const fetchBlogPosts = async () => {
       try {
-        const q = query(collection(db, 'blogs'), orderBy('createdAt', 'desc'));
+        const q = query(collection(db, 'blogs')); // Remove orderBy to test
         const querySnapshot = await getDocs(q);
         const posts: BlogPost[] = [];
         querySnapshot.forEach((doc) => {
