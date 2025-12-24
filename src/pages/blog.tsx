@@ -198,7 +198,7 @@ const BlogPage = () => {
             {filteredPosts.map((post) => (
               <div
                 key={post.id}
-                className="bg-white shadow-lg overflow-hidden hover:shadow-xl transition-all duration-300 hover:-translate-y-1 flex flex-col"
+                className="bg-white rounded-lg shadow-lg overflow-hidden hover:shadow-xl transition-all duration-300 hover:-translate-y-1 flex flex-col"
               >
                 <div className="relative h-96">
                   <img

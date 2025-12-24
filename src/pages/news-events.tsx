@@ -95,7 +95,7 @@ const NewsEventsPage = () => {
             {newsEvents.map((item) => (
               <div
                 key={item.id}
-                className="bg-white shadow-lg overflow-hidden hover:shadow-xl transition-all duration-300 hover:-translate-y-1 flex flex-col"
+                className="bg-white rounded-lg shadow-lg overflow-hidden hover:shadow-xl transition-all duration-300 hover:-translate-y-1 flex flex-col"
               >
                 <div className="relative h-120">
                   <img 
