@@ -25,6 +25,16 @@ const BlogPage = () => {
   const [error, setError] = useState<string | null>(null);
   const [searchQuery, setSearchQuery] = useState('');
 
+  // Dynamically generate categories with counts
+  const categories = [
+    { name: 'Indigenous Knowledge', icon: BookOpen, count: posts.filter(p => p.category === 'Indigenous Knowledge').length },
+    { name: 'Biodiversity Conservation', icon: TreePine, count: posts.filter(p => p.category === 'Biodiversity').length },
+    { name: 'Climate Change', icon: Globe, count: posts.filter(p => p.category === 'Climate Change').length },
+    { name: 'Youth Education', icon: Users, count: posts.filter(p => p.category === 'Education').length },
+    { name: 'Sustainable Development', icon: Leaf, count: posts.filter(p => p.category === 'Sustainable Energy').length },
+    { name: 'Community Action', icon: Heart, count: posts.filter(p => p.category === 'Community Action').length },
+  ];
+
   useEffect(() => {
     const observerOptions = {
       threshold: 0.1,
@@ -47,18 +57,13 @@ const BlogPage = () => {
   useEffect(() => {
     const fetchPosts = async () => {
       try {
-        setLoading(true);
-        setError(null);
         const q = query(collection(db, 'blogs'), orderBy('createdAt', 'desc'));
         const querySnapshot = await getDocs(q);
         const blogPosts: BlogPost[] = [];
-
         querySnapshot.forEach((doc) => {
           const data = doc.data();
-          
-          // Only add active, non-deleted posts
           if (data.status === 'active' && !data.isDeleted) {
-            // Handle different date formats (EXACTLY like Homepage)
+            // Handle different date formats
             let formattedDate: string;
             if (data.blog_date instanceof Timestamp) {
               formattedDate = data.blog_date.toDate().toLocaleDateString();
@@ -71,26 +76,24 @@ const BlogPage = () => {
             }
 
             blogPosts.push({
-              id: doc.id,
-              title: data.blog_title || 'Untitled',
-              firstDescription: data.first_description || '',
+              id: doc.id, // Use string ID directly
+              title: data.blog_title,
+              firstDescription: data.first_description,
               date: formattedDate,
-              author: data.blog_author || 'Anonymous',
-              secondDescription: data.second_description || '',
+              author: data.blog_author,
+              secondDescription: data.second_description,
               additionalImages: data.additionalImages || [],
-              category: data.blog_category || 'General',
+              category: data.blog_category,
               image: data.mainImage || 'https://via.placeholder.com/600x400?text=Image+Not+Found',
-              readingTime: data.reading_time || '5 min read',
+              readingTime: data.reading_time,
               tags: data.tags || [],
             });
           }
         });
-
-        console.log('Fetched posts:', blogPosts.length); // Debug log
         setPosts(blogPosts);
       } catch (err) {
         console.error('Error fetching blog posts:', err);
-        setError('Failed to load blog posts. Please try again later.');
+        setError('Failed to load blog posts');
       } finally {
         setLoading(false);
       }
@@ -98,16 +101,6 @@ const BlogPage = () => {
 
     fetchPosts();
   }, []);
-
-  // Dynamically generate categories with counts
-  const categories = [
-    { name: 'Indigenous Knowledge', icon: BookOpen, count: posts.filter(p => p.category === 'Indigenous Knowledge').length },
-    { name: 'Biodiversity', icon: TreePine, count: posts.filter(p => p.category === 'Biodiversity').length },
-    { name: 'Climate Change', icon: Globe, count: posts.filter(p => p.category === 'Climate Change').length },
-    { name: 'Education', icon: Users, count: posts.filter(p => p.category === 'Education').length },
-    { name: 'Sustainable Energy', icon: Leaf, count: posts.filter(p => p.category === 'Sustainable Energy').length },
-    { name: 'Community Action', icon: Heart, count: posts.filter(p => p.category === 'Community Action').length },
-  ];
 
   // Filter posts based on search query
   const filteredPosts = posts.filter(
@@ -121,7 +114,7 @@ const BlogPage = () => {
     return (
       <div className="min-h-screen bg-gray-50 flex items-center justify-center">
         <div className="text-center">
-          <h2 className="text-2xl font-bold text-gray-800">Loading blog posts...</h2>
+          <h2 className="text-2xl font-bold text-gray-800">Loading...</h2>
         </div>
       </div>
     );
@@ -155,7 +148,6 @@ const BlogPage = () => {
           transform: translateY(0);
         }
       `}</style>
-
       {/* Hero Section */}
       <div className="bg-gradient-to-r from-green-600 to-black/90 text-white py-20 fade-in-section">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -202,56 +194,57 @@ const BlogPage = () => {
       {/* Blog Posts Grid */}
       <section className="py-16 bg-gray-50 fade-in-section">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          {filteredPosts.length === 0 ? (
-            <div className="text-center py-12">
-              <p className="text-gray-600 text-lg">
-                {posts.length === 0 ? 'No blog posts available yet.' : 'No posts match your search.'}
-              </p>
-            </div>
-          ) : (
-            <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
-              {filteredPosts.map((post) => (
-                <div
-                  key={post.id}
-                  className="bg-white rounded-lg shadow-lg overflow-hidden hover:shadow-xl transition-all duration-300 hover:-translate-y-1 flex flex-col"
-                >
-                  <div className="relative h-96">
-                    <img
-                      src={post.image}
-                      alt={post.title}
-                      className="w-full h-full object-cover"
-                      onError={(e) => {
-                        const target = e.target as HTMLImageElement;
-                        target.src = 'https://via.placeholder.com/600x400?text=Image+Not+Found';
-                      }}
-                    />
-                    <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-black to-transparent"></div>
-                    <div className="absolute bottom-0 left-0 right-0 p-6 text-white">
-                      <div className="bg-green-600 text-white px-3 py-1 text-xs font-medium inline-block mb-3">
-                        {post.category}
+          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+            {filteredPosts.map((post) => (
+              <div
+                key={post.id}
+                className="bg-white rounded-lg shadow-lg overflow-hidden hover:shadow-xl transition-all duration-300 hover:-translate-y-1 flex flex-col"
+              >
+                <div className="relative h-96">
+                  <img
+                    src={post.image}
+                    alt={post.title}
+                    className="w-full h-full object-cover"
+                    onError={(e) => {
+                      const target = e.target as HTMLImageElement;
+                      target.src = 'https://via.placeholder.com/600x400?text=Image+Not+Found';
+                    }}
+                  />
+                  <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-black to-transparent"></div>
+                  <div className="absolute bottom-0 left-0 right-0 p-6 text-white">
+                    <div className="bg-green-600 text-white px-3 py-1 text-xs font-medium inline-block mb-3">
+                      {post.category}
+                    </div>
+                    <h2 className="text-xl font-bold mb-2 line-clamp-2">{post.title}</h2>
+                    <p className="text-gray-200 text-sm mb-4 line-clamp-2">{post.firstDescription}</p>
+                    <div className="flex items-center justify-between text-xs text-gray-300">
+                      <div className="flex items-center space-x-1">
+                        <Calendar className="h-3 w-3" />
+                        <span>{post.date}</span>
                       </div>
-                      <h2 className="text-xl font-bold mb-2 line-clamp-2">{post.title}</h2>
-                      <p className="text-gray-200 text-sm mb-4 line-clamp-2">{post.firstDescription}</p>
-                      <div className="flex items-center justify-between text-xs text-gray-300">
-                        <div className="flex items-center space-x-1">
-                          <Calendar className="h-3 w-3" />
-                          <span>{post.date}</span>
-                        </div>
-                        <span>{post.readingTime}</span>
-                      </div>
-                      <div className="flex justify-center mt-10">
-                        <Link to={`/blog/${post.id}`}>
-                          <button className="bg-green-600 hover:bg-green-700 text-white px-6 py-4 font-semibold text-sm transition-all duration-300">
-                            KNOW MORE
-                          </button>
-                        </Link>
-                      </div>
+                      <span>{post.readingTime}</span>
+                    </div>
+                    <div className="flex justify-center mt-10">
+                      <Link to={`/blog/${post.id}`}>
+                        <button className="bg-green-600 hover:bg-green-700 text-white px-6 py-4 font-semibold text-sm transition-all duration-300">
+                          KNOW MORE
+                        </button>
+                      </Link>
                     </div>
                   </div>
                 </div>
-              ))}
-            </div>
-          )}
+              </div>
+            ))}
+          </div>
+
+          {/* Pagination */}
+          <div className="flex justify-center mt-12 space-x-2">
+            <button className="px-4 py-2 rounded-lg bg-white border border-gray-300 text-gray-600 hover:bg-gray-50">Previous</button>
+            <button className="px-4 py-2 rounded-lg bg-green-600 text-white hover:bg-green-700">1</button>
+            <button className="px-4 py-2 rounded-lg bg-white border border-gray-300 text-gray-600 hover:bg-gray-50">2</button>
+            <button className="px-4 py-2 rounded-lg bg-white border border-gray-300 text-gray-600 hover:bg-gray-50">3</button>
+            <button className="px-4 py-2 rounded-lg bg-white border border-gray-300 text-gray-600 hover:bg-gray-50">Next</button>
+          </div>
         </div>
       </section>
 
