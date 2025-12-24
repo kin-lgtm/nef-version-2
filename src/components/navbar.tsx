@@ -66,24 +66,25 @@ const Navbar: React.FC = () => {
                   >
                     <span>{item.name}</span>
                   </Link>
-                  {item.hasSubmenu && isAboutDropdownOpen && (
-                    <div
-                      className="w-[200px] absolute top-full left-0 bg-white shadow-lg py-2"
-                      onMouseEnter={() => setIsAboutDropdownOpen(true)}
-                      onMouseLeave={() => setIsAboutDropdownOpen(false)}
-                    >
-                      {aboutSubmenu.map((subItem) => (
-                        <Link
-                          key={subItem.name}
-                          to={subItem.href}
-                          className="block px-4 py-2 text-gray-800 hover:bg-green-100 transition-colors"
-                          onClick={() => setIsAboutDropdownOpen(false)} // Close dropdown on click
-                        >
-                          {subItem.name}
-                        </Link>
-                      ))}
-                    </div>
-                  )}
+                    {item.hasSubmenu && (
+                      <div
+                        className={`w-[200px] absolute top-full left-0 bg-[#3c3c3c] shadow-lg py-2 transition-all duration-300 ease-in-out ${isAboutDropdownOpen ? 'opacity-100 translate-y-0 pointer-events-auto' : 'opacity-0 -translate-y-2 pointer-events-none'}`}
+                        style={{ zIndex: 100 }}
+                        onMouseEnter={() => setIsAboutDropdownOpen(true)}
+                        onMouseLeave={() => setIsAboutDropdownOpen(false)}
+                      >
+                        {aboutSubmenu.map((subItem) => (
+                          <Link
+                            key={subItem.name}
+                            to={subItem.href}
+                            className="block px-4 py-2 text-white hover:bg-green-100/30 transition-colors"
+                            onClick={() => setIsAboutDropdownOpen(false)} // Close dropdown on click
+                          >
+                            {subItem.name}
+                          </Link>
+                        ))}
+                      </div>
+                    )}
                 </div>
               ))}
             </div>
