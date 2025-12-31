@@ -2,13 +2,16 @@ import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import {
   Award,
-
+  Calendar,
   TreePine,
   Droplets,
   Mountain,
   Bird,
- 
+  ArrowRight,
 } from 'lucide-react';
+import { collection, getDocs, query, orderBy, limit } from 'firebase/firestore';
+import { Timestamp } from 'firebase/firestore';
+import { db } from '../firebase/firebase';
 
 interface HeroSlide {
   title: string;
@@ -29,8 +32,21 @@ interface Program {
   link: string;
 }
 
+interface BlogPost {
+  id: string;
+  title: string;
+  firstDescription: string;
+  date: string;
+  author: string;
+  category: string;
+  image: string;
+  readingTime: string;
+}
+
 const Homepage: React.FC = () => {
   const [currentSlide, setCurrentSlide] = useState<number>(0);
+  const [blogPosts, setBlogPosts] = useState<BlogPost[]>([]);
+  const [loadingBlogs, setLoadingBlogs] = useState(true);
 
   const heroSlides: HeroSlide[] = [
     {
@@ -122,6 +138,50 @@ const Homepage: React.FC = () => {
   useEffect(() => {
     const timer = setInterval(nextSlide, 5000);
     return () => clearInterval(timer);
+  }, []);
+
+  useEffect(() => {
+    const fetchBlogPosts = async () => {
+      try {
+        const q = query(collection(db, 'blogs'), orderBy('createdAt', 'desc'), limit(3));
+        const querySnapshot = await getDocs(q);
+        const posts: BlogPost[] = [];
+        querySnapshot.forEach((doc) => {
+          const data = doc.data();
+          if (data.status === 'active' && !data.isDeleted) {
+            // Handle different date formats
+            let formattedDate: string;
+            if (data.blog_date instanceof Timestamp) {
+              formattedDate = data.blog_date.toDate().toLocaleDateString();
+            } else if (data.blog_date instanceof Date) {
+              formattedDate = data.blog_date.toLocaleDateString();
+            } else if (typeof data.blog_date === 'string') {
+              formattedDate = new Date(data.blog_date).toLocaleDateString();
+            } else {
+              formattedDate = 'Unknown Date';
+            }
+
+            posts.push({
+              id: doc.id,
+              title: data.blog_title,
+              firstDescription: data.first_description,
+              date: formattedDate,
+              author: data.blog_author,
+              category: data.blog_category,
+              image: data.mainImage || 'https://via.placeholder.com/600x400?text=Image+Not+Found',
+              readingTime: data.reading_time,
+            });
+          }
+        });
+        setBlogPosts(posts);
+      } catch (err) {
+        console.error('Error fetching blog posts:', err);
+      } finally {
+        setLoadingBlogs(false);
+      }
+    };
+
+    fetchBlogPosts();
   }, []);
 
   return (
@@ -350,7 +410,75 @@ const Homepage: React.FC = () => {
       </section>
 
       {/* Blog Preview Section */}
-      
+      <section className="py-16 bg-gray-50 fade-in-section">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="text-center mb-12">
+            <h2 className="text-4xl font-bold text-green-800 mb-4">Latest from Our Blog</h2>
+            <h5 className="text-xl text-green-900 max-w-3xl mx-auto">
+              Stay updated with insights on environmental conservation and indigenous knowledge preservation.
+            </h5>
+          </div>
+
+          {loadingBlogs ? (
+            <div className="text-center py-12">
+              <p className="text-gray-600">Loading blog posts...</p>
+            </div>
+          ) : (
+            <>
+              <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+                {blogPosts.map((post) => (
+                  <div
+                    key={post.id}
+                    className="bg-white shadow-lg overflow-hidden hover:shadow-xl transition-all duration-300 hover:-translate-y-1 flex flex-col"
+                  >
+                    <div className="relative h-96">
+                      <img
+                        src={post.image}
+                        alt={post.title}
+                        className="w-full h-full object-cover"
+                        onError={(e) => {
+                          const target = e.target as HTMLImageElement;
+                          target.src = 'https://via.placeholder.com/600x400?text=Image+Not+Found';
+                        }}
+                      />
+                      <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-black to-transparent"></div>
+                      <div className="absolute bottom-0 left-0 right-0 p-6 text-white">
+                        <div className="bg-green-600 text-white px-3 py-1 text-xs font-medium inline-block mb-3">
+                          {post.category}
+                        </div>
+                        <h2 className="text-xl font-bold mb-2 line-clamp-2">{post.title}</h2>
+                        <p className="text-gray-200 text-sm mb-4 line-clamp-2">{post.firstDescription}</p>
+                        <div className="flex items-center justify-between text-xs text-gray-300">
+                          <div className="flex items-center space-x-1">
+                            <Calendar className="h-3 w-3" />
+                            <span>{post.date}</span>
+                          </div>
+                          <span>{post.readingTime}</span>
+                        </div>
+                        <div className="flex justify-center mt-10">
+                          <Link to={`/blog/${post.id}`}>
+                            <button className="bg-green-600 hover:bg-green-700 text-white px-6 py-4 font-semibold text-sm transition-all duration-300">
+                              KNOW MORE
+                            </button>
+                          </Link>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                ))}
+              </div>
+
+              {/* View All Blogs Button */}
+              <div className="text-center mt-12">
+                <Link to="/blog" className="inline-flex items-center space-x-2 bg-green-600 text-white px-8 py-4 rounded-lg font-semibold hover:bg-green-700 transition-all duration-300">
+                  <span>View All Blog Posts</span>
+                  <ArrowRight className="h-5 w-5" />
+                </Link>
+              </div>
+            </>
+          )}
+        </div>
+      </section>
 
       
 

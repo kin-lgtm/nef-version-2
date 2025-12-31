@@ -57,7 +57,7 @@ const BlogPage = () => {
   useEffect(() => {
     const fetchPosts = async () => {
       try {
-        const q = query(collection(db, 'blogs'), orderBy('createdAt', 'desc'));
+        const q = query(collection(db, 'blogs'), orderBy('blog_date', 'desc'));
         const querySnapshot = await getDocs(q);
         const blogPosts: BlogPost[] = [];
         querySnapshot.forEach((doc) => {
