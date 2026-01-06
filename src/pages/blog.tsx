@@ -52,12 +52,12 @@ const BlogPage = () => {
     document.querySelectorAll('.fade-in-section').forEach(el => observer.observe(el));
 
     return () => observer.disconnect();
-  }, []);
+  }, [posts]);
 
   useEffect(() => {
     const fetchPosts = async () => {
       try {
-        const q = query(collection(db, 'blogs'), orderBy('blog_date', 'desc'));
+        const q = query(collection(db, 'blogs'), orderBy('createdAt', 'desc'));
         const querySnapshot = await getDocs(q);
         const blogPosts: BlogPost[] = [];
         querySnapshot.forEach((doc) => {
@@ -194,6 +194,11 @@ const BlogPage = () => {
       {/* Blog Posts Grid */}
       <section className="py-16 bg-gray-50 fade-in-section">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          {filteredPosts.length === 0 ? (
+            <div className="text-center py-12">
+              <p className="text-gray-600 text-lg">No blog posts found.</p>
+            </div>
+          ) : (
           <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
             {filteredPosts.map((post) => (
               <div
@@ -226,7 +231,7 @@ const BlogPage = () => {
                     </div>
                     <div className="flex justify-center mt-10">
                       <Link to={`/blog/${post.id}`}>
-                        <button className="bg-green-600 hover:bg-green-700 text-white px-6 py-4 font-semibold text-sm transition-all duration-300">
+                        <button className="bg-green-600 rounded-lg hover:bg-green-700 text-white px-6 py-4 font-semibold text-sm transition-all duration-300">
                           KNOW MORE
                         </button>
                       </Link>
@@ -236,8 +241,10 @@ const BlogPage = () => {
               </div>
             ))}
           </div>
+          )}
 
           {/* Pagination */}
+          {filteredPosts.length > 0 && (
           <div className="flex justify-center mt-12 space-x-2">
             <button className="px-4 py-2 rounded-lg bg-white border border-gray-300 text-gray-600 hover:bg-gray-50">Previous</button>
             <button className="px-4 py-2 rounded-lg bg-green-600 text-white hover:bg-green-700">1</button>
@@ -245,6 +252,7 @@ const BlogPage = () => {
             <button className="px-4 py-2 rounded-lg bg-white border border-gray-300 text-gray-600 hover:bg-gray-50">3</button>
             <button className="px-4 py-2 rounded-lg bg-white border border-gray-300 text-gray-600 hover:bg-gray-50">Next</button>
           </div>
+          )}
         </div>
       </section>
 
