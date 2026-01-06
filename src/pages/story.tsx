@@ -88,11 +88,11 @@ const StoryPage = () => {
       `}</style>
       
       {/* Hero Section */}
-      <div className="bg-gradient-to-r from-green-600 to-black/90 text-white py-20 fade-in-section">
+      <div className="bg-gradient-to-r from-green-600 to-black/90 text-white py-12 sm:py-16 md:py-20 fade-in-section">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center">
-            <h1 className="text-5xl md:text-6xl font-bold mb-6">Story NEF</h1>
-            <p className="text-xl md:text-2xl text-green-100 max-w-4xl mx-auto leading-relaxed">
+            <h1 className="text-4xl sm:text-5xl md:text-6xl font-bold mb-4 sm:mb-6">Story NEF</h1>
+            <p className="text-base sm:text-lg md:text-2xl text-green-100 max-w-4xl mx-auto leading-relaxed px-2">
               National Environmental Forum - Sri Lanka has premier environmental protection assembly, working to conserve nature for posterity since 2012.
             </p>
           </div>
@@ -101,41 +101,37 @@ const StoryPage = () => {
 
       {/* Journey & Achievements Section */}
       <div className="bg-gradient-to-br from-slate-50 to-green-50 fade-in-section">
-        <section className="py-20 px-4 sm:px-6 lg:px-8">
+        <section className="py-12 sm:py-16 md:py-20 px-4 sm:px-6 lg:px-8">
           <div className="max-w-7xl mx-auto">
-            
-
-            {/* Grid Timeline with Image */}
-            <div className="flex gap-12 items-center">
+            {/* Grid Timeline with Image - Responsive Layout */}
+            <div className="flex flex-col lg:flex-row gap-8 lg:gap-12 items-center">
               {/* Image on the left */}
-              <div className="flex-shrink-0 w-1/3">
+              <div className="w-full sm:w-2/3 md:w-1/2 lg:w-1/3 flex-shrink-0">
                 <img 
                   src="/logo.JPG" 
                   alt="NEF Journey"
-                  className="w-full h-auto object-cover"
+                  className="w-full h-auto object-cover rounded-lg shadow-md"
                 />
               </div>
 
               {/* Timeline cards on the right */}
-              <div className="flex-1 grid grid-cols-2 gap-6">
+              <div className="w-full lg:flex-1 grid grid-cols-1 sm:grid-cols-2 gap-4 sm:gap-6">
                 {journeyMilestones.map((milestone) => {
-                  
                   return (
                     <div 
                       key={milestone.year} 
-                      className="bg-[#3c3c3c] rounded-lg shadow-lg p-6 hover:shadow-xl transition-shadow"
+                      className="bg-[#3c3c3c] rounded-lg shadow-lg p-4 sm:p-6 hover:shadow-xl transition-shadow"
                     >
                       <div className="flex items-start gap-4 mb-3">
                         <div className="flex-shrink-0">
-                        
-                          <span className="text-lg font-semibold text-green-600 uppercase tracking-wide">
+                          <span className="text-base sm:text-lg font-semibold text-green-600 uppercase tracking-wide">
                             {milestone.year}
                           </span>
                         </div>
                       </div>
                       
-                      <h3 className="text-xl font-bold text-white mb-2">{milestone.title}</h3>
-                      <p className="text-white text-sm leading-relaxed">{milestone.description}</p>
+                      <h3 className="text-lg sm:text-xl font-bold text-white mb-2">{milestone.title}</h3>
+                      <p className="text-white text-xs sm:text-sm leading-relaxed">{milestone.description}</p>
                     </div>
                   );
                 })}
@@ -146,34 +142,34 @@ const StoryPage = () => {
       </div>
 
       {/* Founding Members */}
-      <section className="mt-2 mb-16 bg-white fade-in-section">
+      <section className="mt-8 sm:mt-12 md:mt-16 mb-12 sm:mb-16 bg-white fade-in-section">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="text-center mb-12">
-            <h2 className="text-4xl font-bold text-green-900 mb-4">Our Founding Members</h2>
-            <p className="text-xl text-gray-600 max-w-3xl mx-auto">
-              NEF was established on November 1st, 2012, by visionary environmental advocates committed to preserving Sri Lankas natural heritage.
+          <div className="text-center mb-12 sm:mb-16">
+            <h2 className="text-3xl sm:text-4xl font-bold text-green-900 mb-3 sm:mb-4">Our Founding Members</h2>
+            <p className="text-base sm:text-lg md:text-xl text-gray-600 max-w-3xl mx-auto px-2">
+              NEF was established on November 1st, 2012, by visionary environmental advocates committed to preserving Sri Lanka's natural heritage.
             </p>
           </div>
-          <div className="grid md:grid-cols-3 gap-8">
+          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6 sm:gap-8">
             {founderMembers.map((founder, index) => (
-              <div key={index} className="bg-gradient-to-br from-green-50 to-emerald-50 p-6">
+              <div key={index} className="bg-gradient-to-br from-green-50 to-emerald-50 p-4 sm:p-6 rounded-lg">
                 <div className="text-center">
                   {founder.image && (
                     <div className="mb-4">
                       <img 
                         src={founder.image} 
                         alt={founder.name}
-                        className="w-48 h-64 mx-auto object-cover shadow-md"
+                        className="w-40 sm:w-48 h-56 sm:h-64 mx-auto object-cover shadow-md rounded"
                       />
                     </div>
                   )}
-                  <h3 className="text-lg font-semibold text-green-800 mb-2">{founder.name}</h3>
-                  <p className="text-green-600 font-medium mb-2">{founder.position}</p>
+                  <h3 className="text-base sm:text-lg font-semibold text-green-800 mb-2">{founder.name}</h3>
+                  <p className="text-sm sm:text-base text-green-600 font-medium mb-2">{founder.position}</p>
                   {founder.department && (
-                    <p className="text-sm text-gray-600 mb-2">{founder.department}</p>
+                    <p className="text-xs sm:text-sm text-gray-600 mb-2 leading-relaxed">{founder.department}</p>
                   )}
                   {founder.location && (
-                    <p className="text-sm text-gray-600 mb-2">{founder.location}</p>
+                    <p className="text-xs sm:text-sm text-gray-600 mb-2">{founder.location}</p>
                   )}
                 </div>
               </div>

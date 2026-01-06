@@ -135,25 +135,21 @@ const AboutPage: React.FC = () => {
             {/* Content on the left */}
             <div>
               <div className="mb-8">
-                <h2 className="text-4xl font-bold text-green-800 mb-4 ">Our Vision</h2>
+                <h2 className="text-4xl font-bold text-green-800 mb-8 ">Our Mission & Vision</h2>
                 <div className="rounded-xl">
                   <p className="text-gray-700 leading-relaxed">
+                    Our vision is to advise on promotion and development of environmental-based principles, working toward lasting
+                    solutions to environmental problems in Sri Lanka through community participation and expert
+                    guidance as a non-profit organization.
+                  </p>
+                  <p className="text-gray-700 leading-relaxed mb-4 mt-8">
                     Our vision represents our commitment to environmental stewardship, ensuring that Sri Lanka's rich
                     biodiversity and indigenous ecological knowledge are preserved for future generations.
                   </p>
                 </div>
               </div>
 
-              <div>
-                <h2 className="text-4xl font-bold text-green-800 mb-4">Our Mission</h2>
-                <div className=" rounded-xl">
-                  <p className="text-gray-700 leading-relaxed mb-4">
-                    To advise on promotion and development of environmental-based principles, working toward lasting
-                    solutions to environmental problems in Sri Lanka through community participation and expert
-                    guidance as a non-profit organization.
-                  </p>
-                </div>
-              </div>
+              
             </div>
 
             {/* Image on the right */}

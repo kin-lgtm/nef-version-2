@@ -122,7 +122,7 @@ const NewsEventsPage = () => {
                     </div>
                     <div className="flex justify-center mt-4">
                       <Link to={`/news/${item.id}`}>
-                        <button className="bg-green-600 hover:bg-green-700 text-white px-6 py-3 font-semibold text-sm transition-all duration-300">
+                        <button className="bg-green-600 rounded-lg hover:bg-green-700 text-white px-6 py-3 font-semibold text-sm transition-all duration-300">
                           KNOW MORE
                         </button>
                       </Link>

@@ -429,7 +429,7 @@ const Homepage: React.FC = () => {
                 {blogPosts.map((post) => (
                   <div
                     key={post.id}
-                    className="bg-white shadow-lg overflow-hidden hover:shadow-xl transition-all duration-300 hover:-translate-y-1 flex flex-col"
+                    className="bg-white rounded-lg shadow-lg overflow-hidden hover:shadow-xl transition-all duration-300 hover:-translate-y-1 flex flex-col"
                   >
                     <div className="relative h-96">
                       <img
@@ -457,7 +457,7 @@ const Homepage: React.FC = () => {
                         </div>
                         <div className="flex justify-center mt-10">
                           <Link to={`/blog/${post.id}`}>
-                            <button className="bg-green-600 hover:bg-green-700 text-white px-6 py-4 font-semibold text-sm transition-all duration-300">
+                            <button className="bg-green-600 rounded-lg hover:bg-green-700 text-white px-6 py-4 font-semibold text-sm transition-all duration-300">
                               KNOW MORE
                             </button>
                           </Link>
